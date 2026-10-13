@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Construtora Residencial em [Cidade] | Casas, Sobrados e Reformas</title>
+  <meta name="description" content="Construtora especializada em casas, sobrados e reformas residenciais em [Cidade]. Solicite seu orçamento.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <a href="#" class="logo">Construtora [Cidade]</a>
+      <nav class="nav" id="nav">
+        <a href="#servicos">Serviços</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Construímos a casa dos seus sonhos</h1>
+      <p>Casas, sobrados e reformas residenciais com qualidade e prazo garantido em [Cidade].</p>
+      <a href="#contato" class="btn">Solicite um orçamento</a>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section class="servicos" id="servicos">
+    <div class="container">
+      <h2>Nossos serviços</h2>
+      <div class="grid-servicos">
+        <div class="card-servico">
+          <h3>Construção de casas</h3>
+          <p>Do projeto à entrega das chaves, com acompanhamento técnico.</p>
+        </div>
+        <div class="card-servico">
+          <h3>Sobrados</h3>
+          <p>Projetos personalizados para aproveitar melhor o seu terreno.</p>
+        </div>
+        <div class="card-servico">
+          <h3>Reformas e ampliações</h3>
+          <p>Modernize ou amplie sua casa com equipe própria.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFÓLIO -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <h2>Nossas obras</h2>
+      <div class="grid-portfolio">
+        <div class="obra">
+          <img src="img/obra1.jpg" alt="Casa residencial em [Bairro]">
+          <p>Casa residencial – [Bairro]</p>
+        </div>
+        <div class="obra">
+          <img src="img/obra2.jpg" alt="Sobrado em [Bairro]">
+          <p>Sobrado – [Bairro]</p>
+        </div>
+        <div class="obra">
+          <img src="img/obra3.jpg" alt="Reforma em [Bairro]">
+          <p>Reforma – [Bairro]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="sobre" id="sobre">
+    <div class="container">
+      <h2>Sobre a construtora</h2>
+      <p>Há mais de [X] anos construindo casas e sobrados em [Cidade] e região. Equipe própria, materiais de qualidade e compromisso com o prazo.</p>
+      <p><strong>Registro CREA/CAU:</strong> [número]</p>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="contato" id="contato">
+    <div class="container">
+      <h2>Solicite um orçamento</h2>
+      <form action="https://formspree.io/f/SEU_ID" method="POST" id="formContato">
+        <input type="text" name="nome" placeholder="Seu nome" required>
+        <input type="tel" name="telefone" placeholder="WhatsApp" required>
+        <select name="tipo_obra" required>
+          <option value="">Tipo de obra</option>
+          <option>Casa residencial</option>
+          <option>Sobrado</option>
+          <option>Reforma</option>
+        </select>
+        <textarea name="mensagem" placeholder="Conte sobre sua obra"></textarea>
+        <button type="submit" class="btn">Enviar</button>
+      </form>
+      <p id="msgSucesso" class="msg-sucesso"></p>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <div class="container">
+      <p>Construtora [Cidade] – CNPJ [número] – CREA/CAU [número]</p>
+      <p>© 2025 Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
