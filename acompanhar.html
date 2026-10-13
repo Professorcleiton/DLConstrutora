@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhe sua obra | Construtora D</title>
+  <meta name="description" content="Acompanhe a evolução da sua obra em Cruzeiro do Oeste em tempo real.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="img/LOGODL.jpg" alt="Construtora D" class="logo-img">
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#servicos">Serviços</a>
+        <a href="index.html#financiamento">Financiamento</a>
+        <a href="index.html#portfolio">Obras</a>
+        <a href="acompanhar.html">Acompanhar obra</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+  </header>
+
+  <!-- ACOMPANHAMENTO -->
+  <section class="acompanhar">
+    <div class="container">
+      <h1>Acompanhe sua obra</h1>
+      <p class="subtitulo">Digite o código que você recebeu da construtora para ver o andamento.</p>
+
+      <form id="formAcompanhar" class="form-acompanhar">
+        <input type="text" id="codigoObra" placeholder="Ex: CDO-2025-001" required>
+        <button type="submit" class="btn">Buscar obra</button>
+      </form>
+
+      <p id="msgErro" class="msg-erro"></p>
+
+      <!-- RESULTADO -->
+      <div id="resultadoObra" class="resultado-obra" style="display: none;">
+        <h2 id="nomeObra"></h2>
+        <p id="enderecoObra"></p>
+
+        <div class="barra-progresso">
+          <div id="progressoPreenchido" class="progresso-preenchido"></div>
+        </div>
+        <p id="percentualObra" class="percentual"></p>
+
+        <h3>Etapas</h3>
+        <ul id="listaEtapas" class="lista-etapas"></ul>
+
+        <h3>Últimas fotos</h3>
+        <div id="galeriaObra" class="galeria-obra"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <div class="container">
+      <p>Construtora D – Cruzeiro do Oeste/PR – CNPJ [número] – CREA/CAU [número]</p>
+      <p>© 2025 Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/acompanhar.js"></script>
+</body>
+</html>
