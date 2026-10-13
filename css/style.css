@@ -1,0 +1,277 @@
+/* VARIÁVEIS */
+:root {
+  --preto: #1A1A1A;
+  --preto-suave: #111111;
+  --verde-principal: #2E7D32;
+  --verde-destaque: #43A047;
+  --cinza-claro: #F5F5F5;
+  --branco: #FFFFFF;
+  --cinza-texto: #9E9E9E;
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: var(--preto);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* HEADER */
+.header {
+  background: var(--preto);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.logo {
+  color: var(--branco);
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav a {
+  color: var(--branco);
+  text-decoration: none;
+  margin-left: 25px;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: var(--verde-destaque);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--branco);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(rgba(26,26,26,0.75), rgba(26,26,26,0.75)),
+              url('../img/hero.jpg') center/cover no-repeat;
+  color: var(--branco);
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: var(--cinza-claro);
+}
+
+/* BOTÃO */
+.btn {
+  display: inline-block;
+  background: var(--verde-principal);
+  color: var(--branco);
+  padding: 14px 32px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: var(--verde-destaque);
+}
+
+/* SERVIÇOS */
+.servicos {
+  background: var(--cinza-claro);
+  padding: 80px 0;
+}
+
+.servicos h2,
+.portfolio h2,
+.sobre h2,
+.contato h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.servicos h2 { color: var(--preto); }
+
+.grid-servicos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card-servico {
+  background: var(--branco);
+  padding: 30px;
+  border-radius: 8px;
+  border-top: 4px solid var(--verde-principal);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card-servico h3 {
+  color: var(--preto);
+  margin-bottom: 12px;
+}
+
+/* PORTFÓLIO */
+.portfolio {
+  background: var(--preto);
+  color: var(--branco);
+  padding: 80px 0;
+}
+
+.portfolio h2 { color: var(--branco); }
+
+.grid-portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.obra img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.obra:hover img {
+  border-color: var(--verde-destaque);
+}
+
+.obra p {
+  margin-top: 10px;
+  color: var(--cinza-claro);
+}
+
+/* SOBRE */
+.sobre {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.sobre p {
+  max-width: 700px;
+  margin: 0 auto 15px;
+  color: #444;
+}
+
+/* CONTATO */
+.contato {
+  background: var(--preto);
+  color: var(--branco);
+  padding: 80px 0;
+}
+
+.contato h2 { color: var(--branco); }
+
+.contato form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contato input,
+.contato select,
+.contato textarea {
+  padding: 14px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #222;
+  color: var(--branco);
+  font-size: 1rem;
+}
+
+.contato input:focus,
+.contato select:focus,
+.contato textarea:focus {
+  outline: none;
+  border-color: var(--verde-destaque);
+}
+
+.contato textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.msg-sucesso {
+  text-align: center;
+  color: var(--verde-destaque);
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* RODAPÉ */
+.footer {
+  background: var(--preto-suave);
+  color: var(--cinza-texto);
+  text-align: center;
+  padding: 30px 0;
+  font-size: 0.9rem;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: var(--preto);
+    flex-direction: column;
+    padding: 20px 0;
+  }
+
+  .nav.ativo {
+    display: flex;
+  }
+
+  .nav a {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+}
