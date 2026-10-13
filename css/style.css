@@ -1,9 +1,9 @@
 /* VARIÁVEIS */
 :root {
-  --preto: #1A1A1A;
+  --preto: #000000;
   --preto-suave: #111111;
-  --verde-principal: #2E7D32;
-  --verde-destaque: #43A047;
+  --verde-principal: #1B8A3A;
+  --verde-destaque: #5CB85C;
   --cinza-claro: #F5F5F5;
   --branco: #FFFFFF;
   --cinza-texto: #9E9E9E;
@@ -40,14 +40,20 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 80px;
 }
 
 .logo {
-  color: var(--branco);
-  font-size: 1.3rem;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+}
+
+.logo-img {
+  height: 55px;
+  width: auto;
+  display: block;
+  border-radius: 4px;
 }
 
 .nav a {
@@ -55,6 +61,7 @@ body {
   text-decoration: none;
   margin-left: 25px;
   transition: color 0.3s;
+  font-size: 0.95rem;
 }
 
 .nav a:hover {
@@ -72,7 +79,7 @@ body {
 
 /* HERO */
 .hero {
-  background: linear-gradient(rgba(26,26,26,0.75), rgba(26,26,26,0.75)),
+  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
               url('../img/hero.jpg') center/cover no-repeat;
   color: var(--branco);
   text-align: center;
@@ -117,7 +124,8 @@ body {
 .servicos h2,
 .portfolio h2,
 .sobre h2,
-.contato h2 {
+.contato h2,
+.financiamento h2 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 40px;
@@ -127,7 +135,7 @@ body {
 
 .grid-servicos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 25px;
 }
 
@@ -142,6 +150,70 @@ body {
 .card-servico h3 {
   color: var(--preto);
   margin-bottom: 12px;
+}
+
+/* FINANCIAMENTO */
+.financiamento {
+  background: var(--branco);
+  padding: 80px 0;
+}
+
+.financiamento h2 {
+  color: var(--preto);
+}
+
+.grid-passos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.passo {
+  text-align: center;
+  padding: 25px;
+  border-radius: 8px;
+  background: var(--cinza-claro);
+  border-bottom: 4px solid var(--verde-principal);
+}
+
+.passo .numero {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 50%;
+  background: var(--verde-principal);
+  color: var(--branco);
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.passo h3 {
+  color: var(--preto);
+  margin-bottom: 10px;
+}
+
+.passo p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.destaque-financiamento {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 25px;
+  background: var(--preto);
+  color: var(--branco);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  border-left: 5px solid var(--verde-principal);
+}
+
+.destaque-financiamento strong {
+  color: var(--verde-destaque);
 }
 
 /* PORTFÓLIO */
@@ -250,7 +322,7 @@ body {
   .nav {
     display: none;
     position: absolute;
-    top: 70px;
+    top: 80px;
     left: 0;
     width: 100%;
     background: var(--preto);
@@ -273,5 +345,9 @@ body {
 
   .hero h1 {
     font-size: 1.8rem;
+  }
+
+  .logo-img {
+    height: 45px;
   }
 }
