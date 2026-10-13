@@ -1,71 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acompanhe sua obra | Construtora D</title>
-  <meta name="description" content="Acompanhe a evolução da sua obra em Cruzeiro do Oeste em tempo real.">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+const formAcompanhar = document.getElementById('formAcompanhar');
+const msgErro = document.getElementById('msgErro');
+const resultado = document.getElementById('resultadoObra');
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="img/LOGODL.jpg" alt="Construtora D" class="logo-img">
-      </a>
-      <nav class="nav" id="nav">
-        <a href="index.html#servicos">Serviços</a>
-        <a href="index.html#financiamento">Financiamento</a>
-        <a href="index.html#portfolio">Obras</a>
-        <a href="acompanhar.html">Acompanhar obra</a>
-        <a href="index.html#contato">Contato</a>
-      </nav>
-      <button class="menu-toggle" id="menuToggle">☰</button>
-    </div>
-  </header>
+let obrasCache = null;
 
-  <!-- ACOMPANHAMENTO -->
-  <section class="acompanhar">
-    <div class="container">
-      <h1>Acompanhe sua obra</h1>
-      <p class="subtitulo">Digite o código que você recebeu da construtora para ver o andamento.</p>
+async function carregarObras() {
+  if (obrasCache) return obrasCache;
+  const resposta = await fetch('data/obras.json');
+  obrasCache = await resposta.json();
+  return obrasCache;
+}
 
-      <form id="formAcompanhar" class="form-acompanhar">
-        <input type="text" id="codigoObra" placeholder="Ex: CDO-2025-001" required>
-        <button type="submit" class="btn">Buscar obra</button>
-      </form>
+if (formAcompanhar) {
+  formAcompanhar.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const codigo = document.getElementById('codigoObra').value.trim().toUpperCase();
 
-      <p id="msgErro" class="msg-erro"></p>
+    try {
+      const obras = await carregarObras();
 
-      <div id="resultadoObra" class="resultado-obra" style="display: none;">
-        <h2 id="nomeObra"></h2>
-        <p id="enderecoObra"></p>
+      if (!obras[codigo]) {
+        msgErro.textContent = 'Código não encontrado. Verifique com a construtora.';
+        resultado.style.display = 'none';
+        return;
+      }
 
-        <div class="barra-progresso">
-          <div id="progressoPreenchido" class="progresso-preenchido"></div>
-        </div>
-        <p id="percentualObra" class="percentual"></p>
+      msgErro.textContent = '';
+      const obra = obras[codigo];
 
-        <h3>Etapas</h3>
-        <ul id="listaEtapas" class="lista-etapas"></ul>
+      document.getElementById('nomeObra').textContent = obra.nome;
+      document.getElementById('enderecoObra').textContent = obra.endereco;
+      document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
+      document.getElementById('percentualObra').textContent = obra.percentual + '% concluído';
 
-        <h3>Últimas fotos</h3>
-        <div id="galeriaObra" class="galeria-obra"></div>
-      </div>
-    </div>
-  </section>
+      const lista = document.getElementById('listaEtapas');
+      lista.innerHTML = '';
+      obra.etapas.forEach(etapa => {
+        const li = document.createElement('li');
+        li.textContent = etapa.nome;
+        li.className = etapa.concluida ? 'etapa concluida' : 'etapa pendente';
+        lista.appendChild(li);
+      });
 
-  <!-- RODAPÉ -->
-  <footer class="footer">
-    <div class="container">
-      <p>Construtora D – Cruzeiro do Oeste/PR – CNPJ [número] – CREA/CAU [número]</p>
-      <p>© 2025 Todos os direitos reservados.</p>
-    </div>
-  </footer>
+      const galeria = document.getElementById('galeriaObra');
+      galeria.innerHTML = '';
+      obra.fotos.forEach(foto => {
+        const img = document.createElement('img');
+        img.src = foto;
+        img.alt = 'Foto da obra';
+        galeria.appendChild(img);
+      });
 
-  <script src="js/main.js"></script>
-  <script src="js/acompanhar.js"></script>
-</body>
-</html>
+      resultado.style.display = 'block';
+    } catch (erro) {
+      msgErro.textContent = 'Erro ao carregar os dados. Tente novamente.';
+    }
+  });
+}
