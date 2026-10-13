@@ -1,4 +1,6 @@
-// 1. MENU MOBILE
+// ===========================
+// MENU MOBILE
+// ===========================
 const menuToggle = document.getElementById('menuToggle');
 const nav = document.getElementById('nav');
 
@@ -14,7 +16,9 @@ if (menuToggle && nav) {
   });
 }
 
-// 2. SCROLL SUAVE (só na index)
+// ===========================
+// SCROLL SUAVE
+// ===========================
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', (e) => {
     const href = link.getAttribute('href');
@@ -27,7 +31,9 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-// 3. VALIDAÇÃO DO FORMULÁRIO (só na index)
+// ===========================
+// VALIDAÇÃO DO FORMULÁRIO
+// ===========================
 const form = document.getElementById('formContato');
 const msgSucesso = document.getElementById('msgSucesso');
 
@@ -49,6 +55,7 @@ if (form) {
     }
   });
 }
+
 // ===========================
 // ANIMAÇÕES COORDENADAS
 // ===========================
@@ -61,7 +68,7 @@ function criarBarraProgresso() {
   return barra;
 }
 
-// 2. HEADER QUE ENCOLHE AO ROLAR + PARALLAX DO HERO
+// 2. HEADER QUE ENCOLHE + PARALLAX DO HERO
 function configurarScroll() {
   const header = document.querySelector('.header');
   const hero = document.querySelector('.hero');
@@ -70,37 +77,38 @@ function configurarScroll() {
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const alturaTotal = document.documentElement.scrollHeight - window.innerHeight;
-    const progresso = (scrollY / alturaTotal) * 100;
+    const progresso = alturaTotal > 0 ? (scrollY / alturaTotal) * 100 : 0;
 
-    // Barra de progresso
     barra.style.width = progresso + '%';
 
-    // Header encolhe
-    if (scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    if (header) {
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     }
 
-    // Parallax do hero
     if (hero && scrollY < window.innerHeight) {
-      const heroBg = hero.querySelector('::before');
-      // Aplica no elemento real
-      hero.style.setProperty('--parallax', scrollY * 0.4 + 'px');
-      const before = hero;
-      before.style.backgroundPositionY = scrollY * 0.4 + 'px';
+      hero.style.backgroundPositionY = scrollY * 0.4 + 'px';
     }
   }, { passive: true });
 }
 
-// 3. REVEAL DAS SEÇÕES (IntersectionObserver)
+// 3. REVEAL DAS SEÇÕES
 function configurarReveal() {
   const elementos = document.querySelectorAll('.reveal, .reveal-stagger');
+
+  if (!('IntersectionObserver' in window)) {
+    elementos.forEach(el => el.classList.add('visible'));
+    return;
+  }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
   }, {
