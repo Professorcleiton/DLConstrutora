@@ -6,7 +6,6 @@ menuToggle.addEventListener('click', () => {
   nav.classList.toggle('ativo');
 });
 
-// Fecha o menu ao clicar em um link
 nav.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     nav.classList.remove('ativo');
@@ -31,15 +30,14 @@ const msgSucesso = document.getElementById('msgSucesso');
 form.addEventListener('submit', (e) => {
   const nome = form.nome.value.trim();
   const telefone = form.telefone.value.trim();
-  const tipo = form.tipo_obra.value;
+  const renda = form.renda.value.trim();
+  const terreno = form.terreno.value;
 
-  if (!nome || !telefone || !tipo) {
+  if (!nome || !telefone || !renda || !terreno) {
     e.preventDefault();
-    alert('Por favor, preencha nome, telefone e tipo de obra.');
+    alert('Por favor, preencha todos os campos obrigatórios.');
     return;
   }
 
-  // Se estiver usando Formspree, o envio é automático.
-  // Abaixo, apenas mostramos mensagem após envio (para demo).
-  msgSucesso.textContent = 'Orçamento enviado! Entraremos em contato em breve.';
+  msgSucesso.textContent = 'Dados enviados! Entraremos em contato em breve.';
 });
