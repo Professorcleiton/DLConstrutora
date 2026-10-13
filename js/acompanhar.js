@@ -1,16 +1,13 @@
 // ===========================
-// ACOMPANHAR OBRA - REFATORADO
+// ACOMPANHAR OBRA
 // ===========================
 
-// --- ESTADO ---
 let obrasCache = null;
 
-// --- ELEMENTOS ---
 const formAcompanhar = document.getElementById('formAcompanhar');
 const msgErro = document.getElementById('msgErro');
 const resultado = document.getElementById('resultadoObra');
 
-// --- CARREGAMENTO DE DADOS ---
 async function carregarObras() {
   if (obrasCache) return obrasCache;
 
@@ -24,7 +21,6 @@ async function carregarObras() {
   return obrasCache;
 }
 
-// --- VALIDAÇÃO ---
 function validarCodigo(codigo) {
   if (!codigo) {
     return 'Digite um código de obra.';
@@ -32,12 +28,10 @@ function validarCodigo(codigo) {
   return null;
 }
 
-// --- BUSCA ---
 function buscarObra(obras, codigo) {
   return obras[codigo] || null;
 }
 
-// --- RENDERIZAÇÃO ---
 function limparResultado() {
   msgErro.textContent = '';
   resultado.style.display = 'none';
@@ -80,13 +74,11 @@ function renderizarGaleria(fotos) {
   });
 }
 
-// --- MENSAGENS ---
 function mostrarErro(mensagem) {
   msgErro.textContent = mensagem;
   resultado.style.display = 'none';
 }
 
-// --- HANDLER PRINCIPAL ---
 async function handleSubmit(e) {
   e.preventDefault();
   limparResultado();
@@ -115,7 +107,6 @@ async function handleSubmit(e) {
   }
 }
 
-// --- INICIALIZAÇÃO ---
 if (formAcompanhar) {
   formAcompanhar.addEventListener('submit', handleSubmit);
 }
