@@ -117,5 +117,16 @@
 
   <script src="js/main.js"></script>
   <script src="js/acompanhar.js"></script>
+<!-- Widget de Acessibilidade -->
+<script src="https://cdn.jsdelivr.net/npm/ufc-itapaje-accessibility/dist/index.global.js"></script>
+<script>
+  new Accessibility.Accessibility({
+    language: {
+      textToSpeechLang: 'pt-BR'
+    },
+    session: { persistent: true }
+  });
+</script>
+  
 </body>
 </html>
