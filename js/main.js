@@ -113,7 +113,44 @@ function configurarReveal() {
 
   elementos.forEach(el => observer.observe(el));
 }
+// ===========================
+// TROCA DE VÍDEOS NO HERO
+// ===========================
+function configurarVideosHero() {
+  const videos = document.querySelectorAll('.hero-video');
+  if (videos.length < 2) return;
 
+  let indiceAtual = 0;
+
+  function tocarProximo() {
+    const atual = videos[indiceAtual];
+    const proximo = videos[(indiceAtual + 1) % videos.length];
+
+    atual.classList.remove('active');
+    atual.pause();
+
+    proximo.currentTime = 0;
+    proximo.classList.add('active');
+    proximo.play();
+
+    indiceAtual = (indiceAtual + 1) % videos.length;
+  }
+
+  // Troca quando o vídeo atual terminar
+  videos.forEach(video => {
+    video.addEventListener('ended', tocarProximo);
+  });
+
+  // Garante que o primeiro está tocando
+  videos[0].play();
+}
+
+// Adicione na inicialização
+document.addEventListener('DOMContentLoaded', () => {
+  configurarScroll();
+  configurarReveal();
+  configurarVideosHero(); // <--- nova linha
+});
 // 4. INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', () => {
   configurarScroll();
