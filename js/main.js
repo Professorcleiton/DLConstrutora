@@ -68,7 +68,7 @@ function criarBarraProgresso() {
   return barra;
 }
 
-// 2. HEADER QUE ENCOLHE (sem parallax do hero, porque agora é vídeo)
+// 2. HEADER QUE ENCOLHE
 function configurarScroll() {
   const header = document.querySelector('.header');
   const barra = criarBarraProgresso();
@@ -113,9 +113,8 @@ function configurarReveal() {
 
   elementos.forEach(el => observer.observe(el));
 }
-// ===========================
-// TROCA DE VÍDEOS NO HERO
-// ===========================
+
+// 4. TROCA DE VÍDEOS NO HERO
 function configurarVideosHero() {
   const videos = document.querySelectorAll('.hero-video');
   if (videos.length < 2) return;
@@ -145,14 +144,11 @@ function configurarVideosHero() {
   videos[0].play();
 }
 
-// Adicione na inicialização
+// ===========================
+// INICIALIZAÇÃO
+// ===========================
 document.addEventListener('DOMContentLoaded', () => {
   configurarScroll();
   configurarReveal();
-  configurarVideosHero(); // <--- nova linha
-});
-// 4. INICIALIZAÇÃO
-document.addEventListener('DOMContentLoaded', () => {
-  configurarScroll();
-  configurarReveal();
+  configurarVideosHero();
 });
