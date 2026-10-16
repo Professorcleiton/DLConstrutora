@@ -99,7 +99,7 @@
           </svg>
         </a>
       </div>
-      <p>DL Construtora – Cruzeiro do Oeste/PR – CNPJ [número] – CREA/CAU [número]</p>
+      <p>DL Construtora – Cruzeiro do Oeste/PR – CNPJ 61.646.215/0001-79</p>
       <p>© 2025 Todos os direitos reservados.</p>
     </div>
   </footer>
@@ -117,17 +117,15 @@
 
   <script src="js/main.js"></script>
   <script src="js/acompanhar.js"></script>
-<!-- Widget de Acessibilidade -->
-<script src="https://cdn.jsdelivr.net/npm/ufc-itapaje-accessibility/dist/index.global.js"></script>
-<script>
-  new Accessibility.Accessibility({
-    language: {
-      textToSpeechLang: 'pt-BR'
-    },
-    position: 'bottom-left', // <--- Adicione esta linha
-    session: { persistent: true }
-  });
-</script>
-  
+
+  <!-- Widget de Acessibilidade -->
+  <script src="https://cdn.jsdelivr.net/npm/ufc-itapaje-accessibility/dist/index.global.js"></script>
+  <script>
+    new Accessibility.Accessibility({
+      language: { textToSpeechLang: 'pt-BR' },
+      labels: { menuTitle: 'Acessibilidade DL' },
+      session: { persistent: true }
+    });
+  </script>
 </body>
 </html>
