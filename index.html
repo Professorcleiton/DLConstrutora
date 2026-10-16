@@ -204,5 +204,17 @@
   </a>
 
   <script src="js/main.js"></script>
+
+<!-- Script do Widget de Acessibilidade -->
+<script src="https://cdn.jsdelivr.net/npm/ufc-itapaje-accessibility/dist/index.global.js"></script>
+<script>
+  // Inicializa o widget com configurações padrão (em português)
+  new Accessibility.Accessibility({
+    language: {
+      textToSpeechLang: 'pt-BR' // Garante que a leitura seja em português
+    }
+  });
+</script>
+  
 </body>
 </html>
