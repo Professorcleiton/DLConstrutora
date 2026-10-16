@@ -68,10 +68,9 @@ function criarBarraProgresso() {
   return barra;
 }
 
-// 2. HEADER QUE ENCOLHE + PARALLAX DO HERO
+// 2. HEADER QUE ENCOLHE (sem parallax do hero, porque agora é vídeo)
 function configurarScroll() {
   const header = document.querySelector('.header');
-  const hero = document.querySelector('.hero');
   const barra = criarBarraProgresso();
 
   window.addEventListener('scroll', () => {
@@ -87,10 +86,6 @@ function configurarScroll() {
       } else {
         header.classList.remove('scrolled');
       }
-    }
-
-    if (hero && scrollY < window.innerHeight) {
-      hero.style.backgroundPositionY = scrollY * 0.4 + 'px';
     }
   }, { passive: true });
 }
