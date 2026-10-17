@@ -1,53 +1,37 @@
 {
   "CDO-2025-001": {
-    "nome": "Casa Residencial – Família Silva",
+    "nome": "Casa Residencial – Jaqueline & Cleiton",
     "endereco": "Bairro Jardim Alvorada, Cruzeiro do Oeste/PR",
-    "percentual": 65,
+    "percentual": 02,
     "etapas": [
-      { "nome": "Fundação", "concluida": true },
-      { "nome": "Estrutura", "concluida": true },
-      { "nome": "Alvenaria", "concluida": true },
-      { "nome": "Cobertura", "concluida": false },
-      { "nome": "Acabamento", "concluida": false },
-      { "nome": "Entrega", "concluida": false }
+      { "nome": "Documentação Inicial", "status": "andamento" }, 
+      { "nome": "Fundação", "status": "pendente" },
+      { "nome": "Estrutura", "status": "pendente" },
+      { "nome": "Alvenaria", "status": "pendente" },
+      { "nome": "Cobertura", "status": "pendente" },
+      { "nome": "Acabamento", "status": "pendente" },
+      { "nome": "Entrega", "status": "pendente" }
     ],
     "fotos": [
-      "img/obras/obra1.jpg",
-      "img/obras/obra2.jpg",
-      "img/obras/obra3.jpg"
+      "img/obras/001-foto1.jpg",
+      "img/obras/001-foto2.jpg"
     ]
   },
   "CDO-2025-002": {
     "nome": "Casa Popular – Família Souza",
     "endereco": "Conjunto Primavera, Cruzeiro do Oeste/PR",
-    "percentual": 30,
+    "percentual": 15,
     "etapas": [
-      { "nome": "Fundação", "concluida": true },
-      { "nome": "Estrutura", "concluida": false },
-      { "nome": "Alvenaria", "concluida": false },
-      { "nome": "Cobertura", "concluida": false },
-      { "nome": "Acabamento", "concluida": false },
-      { "nome": "Entrega", "concluida": false }
+      { "nome": "Documentação Inicial", "status": "concluida" },
+      { "nome": "Fundação", "status": "andamento" },
+      { "nome": "Estrutura", "status": "pendente" },
+      { "nome": "Alvenaria", "status": "pendente" },
+      { "nome": "Cobertura", "status": "pendente" },
+      { "nome": "Acabamento", "status": "pendente" },
+      { "nome": "Entrega", "status": "pendente" }
     ],
     "fotos": [
-      "img/obras/obra1.jpg"
-    ]
-  },
-  "CDO-2025-003": {
-    "nome": "Casa Residencial – Família Oliveira",
-    "endereco": "Centro, Cruzeiro do Oeste/PR",
-    "percentual": 90,
-    "etapas": [
-      { "nome": "Fundação", "concluida": true },
-      { "nome": "Estrutura", "concluida": true },
-      { "nome": "Alvenaria", "concluida": true },
-      { "nome": "Cobertura", "concluida": true },
-      { "nome": "Acabamento", "concluida": true },
-      { "nome": "Entrega", "concluida": false }
-    ],
-    "fotos": [
-      "img/obras/obra2.jpg",
-      "img/obras/obra3.jpg"
+      "img/obras/002-foto1.jpg"
     ]
   }
 }
