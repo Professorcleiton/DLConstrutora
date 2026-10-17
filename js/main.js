@@ -32,27 +32,47 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 // ===========================
-// VALIDAÇÃO DO FORMULÁRIO
+// FORMULÁRIO → WHATSAPP
 // ===========================
 const form = document.getElementById('formContato');
 const msgSucesso = document.getElementById('msgSucesso');
 
 if (form) {
   form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
     const nome = form.nome.value.trim();
     const telefone = form.telefone.value.trim();
     const renda = form.renda.value.trim();
     const terreno = form.terreno.value;
+    const mensagem = form.mensagem.value.trim();
 
     if (!nome || !telefone || !renda || !terreno) {
-      e.preventDefault();
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
+    // Monta a mensagem formatada para o WhatsApp
+    const texto = `Olá! Quero saber se me enquadro no financiamento.%0A%0A` +
+                  `*Nome:* ${nome}%0A` +
+                  `*Telefone:* ${telefone}%0A` +
+                  `*Renda:* R$ ${renda}%0A` +
+                  `*Terreno:* ${terreno}%0A` +
+                  `*Mensagem:* ${mensagem || 'Sem mensagem'}`;
+
+    // Abre o WhatsApp com a mensagem preenchida
+    window.open(`https://wa.me/5544991110706?text=${texto}`, '_blank');
+
+    // Mostra mensagem de sucesso
     if (msgSucesso) {
-      msgSucesso.textContent = 'Dados enviados! Entraremos em contato em breve.';
+      msgSucesso.textContent = 'Você será redirecionado para o WhatsApp...';
     }
+
+    // Limpa o formulário depois de um tempo
+    setTimeout(() => {
+      form.reset();
+      if (msgSucesso) msgSucesso.textContent = '';
+    }, 3000);
   });
 }
 
