@@ -551,3 +551,21 @@ body {
   .whatsapp-text { display: none; }
   .whatsapp-icon svg { width: 24px; height: 24px; }
 }
+
+/* BOTÃO VOLTAR */
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--texto-corpo);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 40px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-voltar:hover {
+  color: var(--verde-principal);
+  transform: translateX(-5px);
+}
