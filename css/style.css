@@ -19,6 +19,7 @@
   --verde-principal: #0F5C26; /* Verde escuro da logo */
   --verde-hover: #1B8A3A;     
   --cobre: #C08A5E;           /* Detalhe de luxo */
+  --cobre-escuro: #A06B42;
   
   --vidro-bg: rgba(255, 255, 255, 0.85); /* Header de vidro claro */
   --borda-sutil: rgba(0, 0, 0, 0.08);
@@ -46,7 +47,7 @@ body {
 }
 
 /* ===========================
-   BARRA DE PROGRESSO
+   BARRA DE PROGRESSO TOPO
    =========================== */
 .progress-bar {
   position: fixed;
@@ -163,7 +164,7 @@ body {
 }
 
 /* ===========================
-   HERO COM VÍDEO (MANTÉM O CONTRASTE)
+   HERO COM VÍDEO
    =========================== */
 .hero {
   position: relative;
@@ -349,7 +350,7 @@ body {
    SEÇÃO SOBRE (ESTILO EDITORIAL)
    =========================== */
 .sobre-novo {
-  background: #111111; /* Fundo escuro para dar contraste com a palavra */
+  background: #111111;
   padding: 120px 0;
   color: #FFFFFF;
   overflow: hidden;
@@ -365,10 +366,9 @@ body {
   align-items: center;
 }
 
-/* Lado do Texto */
 .tag-sobre {
   display: inline-block;
-  color: #C08A5E; /* Cobre */
+  color: #C08A5E;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -382,13 +382,10 @@ body {
   margin-bottom: 24px;
   color: #FFFFFF;
   letter-spacing: -1px;
-  text-align: left; /* Força alinhamento à esquerda */
+  text-align: left;
 }
 
-.sobre-texto h2 strong {
-  color: #1B8A3A; /* Verde destaque */
-  font-weight: 700;
-}
+.sobre-texto h2 strong { color: #1B8A3A; font-weight: 700; }
 
 .sobre-texto p {
   font-size: 1.1rem;
@@ -397,80 +394,26 @@ body {
   line-height: 1.8;
 }
 
-.sobre-lista {
-  list-style: none;
-  margin-bottom: 40px;
-}
+.sobre-lista { list-style: none; margin-bottom: 40px; }
+.sobre-lista li { position: relative; padding-left: 30px; margin-bottom: 16px; color: #D0D0D0; font-size: 1.05rem; }
+.sobre-lista li::before { content: '✓'; position: absolute; left: 0; color: #1B8A3A; font-weight: bold; }
 
-.sobre-lista li {
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 16px;
-  color: #D0D0D0;
-  font-size: 1.05rem;
-}
-
-.sobre-lista li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #1B8A3A; /* Check verde */
-  font-weight: bold;
-}
-
-.btn-sobre {
-  background: #FFFFFF;
-  color: #111111;
-  border: 1px solid #FFFFFF;
-}
-
-.btn-sobre:hover {
-  background: transparent;
-  color: #FFFFFF;
-}
+.btn-sobre { background: #FFFFFF; color: #111111; border: 1px solid #FFFFFF; }
+.btn-sobre:hover { background: transparent; color: #FFFFFF; }
 
 .sobre-video-wrapper {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
+  position: relative; border-radius: 12px; overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  
-  /* MUDANÇA AQUI: Formato horizontal */
   aspect-ratio: 16 / 9; 
   width: 100%;
 }
 
-.sobre-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: relative;
-  z-index: 2;
-}
+.sobre-video { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; }
 
 .sobre-palavra-fundo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 8rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.1); /* Branco bem transparente */
-  z-index: 3;
-  pointer-events: none;
-  white-space: nowrap;
-  letter-spacing: -5px;
-}
-
-/* Responsivo */
-@media (max-width: 900px) {
-  .sobre-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .sobre-texto h2 { font-size: 2.2rem; }
-  .sobre-video-wrapper { aspect-ratio: 16/9; }
-  .sobre-palavra-fundo { font-size: 4rem; }
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 8rem; font-weight: 900; color: rgba(255, 255, 255, 0.1);
+  z-index: 3; pointer-events: none; white-space: nowrap; letter-spacing: -5px;
 }
 
 /* CONTATO */
@@ -487,14 +430,27 @@ body {
 .contato .btn:hover { background: var(--verde-hover); border-color: var(--verde-hover); }
 .msg-sucesso { text-align: center; color: var(--verde-principal); margin-top: 20px; font-weight: 600; }
 
-/* ACOMPANHAR OBRA */
+/* ===========================
+   ACOMPANHAR OBRA (TIMELINE)
+   =========================== */
 .acompanhar h1 { text-align: center; font-size: 2.5rem; margin-bottom: 12px; color: var(--texto-titulo); }
 .acompanhar h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--verde-principal); margin: 20px auto 0; border-radius: 2px; }
 .subtitulo { text-align: center; color: var(--texto-corpo); margin-bottom: 50px; }
+
+/* Botão Voltar */
+.btn-voltar {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--texto-corpo); text-decoration: none;
+  font-size: 0.95rem; font-weight: 500; margin-bottom: 40px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.btn-voltar:hover { color: var(--verde-principal); transform: translateX(-5px); }
+
 .form-acompanhar { max-width: 560px; margin: 0 auto 30px; display: flex; gap: 12px; }
 .form-acompanhar input { flex: 1; padding: 16px 20px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 1rem; background: #FFF; color: var(--texto-titulo); }
 .form-acompanhar input:focus { outline: none; border-color: var(--verde-principal); }
 .form-acompanhar .btn { background: var(--verde-principal); border-color: var(--verde-principal); color: #FFF; }
+
 .resultado-obra {
   max-width: 800px; margin: 50px auto 0; background: #FFF; padding: 50px;
   border-radius: 8px; border: 1px solid var(--borda-sutil); border-left: 4px solid var(--verde-principal);
@@ -507,50 +463,91 @@ body {
 .barra-progresso { width: 100%; height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin: 30px 0 12px; }
 .progresso-preenchido { height: 100%; background: linear-gradient(90deg, var(--verde-principal), var(--verde-hover)); transition: width 1.2s ease; border-radius: 4px; }
 .percentual { text-align: right; font-weight: 600; color: var(--verde-principal); margin-bottom: 25px; }
-.lista-etapas { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 25px; }
-.etapa { padding: 12px 18px; border-radius: 4px; font-size: 0.85rem; text-align: center; }
-.etapa.concluida { background: rgba(15, 92, 38, 0.1); color: var(--verde-principal); border: 1px solid var(--verde-principal); font-weight: 600; }
-/* Etapa Concluída (Verde) */
-.etapa.concluida {
-  background: rgba(15, 92, 38, 0.1);
-  color: var(--verde-principal);
-  border: 1px solid var(--verde-principal);
-  font-weight: 600;
-}
 
-/* Etapa Em Andamento (Cobre/Laranja para chamar atenção) */
-.etapa.andamento {
-  background: rgba(192, 138, 94, 0.15); /* Fundo cobre suave */
-  color: var(--cobre-escuro); /* Texto cobre escuro */
-  border: 1px solid var(--cobre);
-  font-weight: 600;
+/* Linha do Tempo */
+.lista-etapas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 30px 0 40px;
   position: relative;
-  overflow: hidden;
+  padding-left: 20px;
+  list-style: none;
 }
 
-/* Efeito de brilho passando na etapa em andamento */
-.etapa.andamento::after {
+.lista-etapas::before {
   content: '';
   position: absolute;
+  left: 24px;
   top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  animation: shimmer 2.5s infinite;
+  bottom: 0;
+  width: 2px;
+  background: #E5E7EB;
+  z-index: 1;
 }
 
-@keyframes shimmer {
-  100% { left: 100%; }
+.etapa {
+  position: relative;
+  padding: 15px 20px 15px 45px;
+  background: transparent !important;
+  border: none !important;
+  text-align: left;
+  font-weight: 500;
+  color: var(--texto-corpo);
+  z-index: 2;
+  display: flex;
+  align-items: center;
 }
 
-/* Etapa Pendente (Cinza) */
-.etapa.pendente {
-  background: #F3F4F6;
-  color: #9CA3AF;
-  border: 1px solid #E5E7EB;
+.etapa::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #E5E7EB;
+  border: 2px solid #FFF;
+  z-index: 3;
 }
-.etapa.pendente { background: #F3F4F6; color: #9CA3AF; border: 1px solid #E5E7EB; }
+
+.etapa.concluida { color: var(--texto-titulo); }
+.etapa.concluida::before {
+  background: var(--verde-principal);
+  box-shadow: 0 0 0 2px var(--verde-principal);
+}
+.etapa.concluida::after {
+  content: '✓';
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FFF;
+  font-size: 9px;
+  font-weight: bold;
+  z-index: 4;
+}
+
+.etapa.andamento {
+  color: var(--cobre-escuro);
+  font-weight: 700;
+}
+.etapa.andamento::before {
+  background: var(--cobre);
+  box-shadow: 0 0 0 4px rgba(192, 138, 94, 0.3);
+  animation: pulse-etapa 1.5s infinite;
+}
+
+@keyframes pulse-etapa {
+  0% { box-shadow: 0 0 0 0 rgba(192, 138, 94, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(192, 138, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(192, 138, 94, 0); }
+}
+
+.etapa.pendente { color: #9CA3AF; }
+
 .galeria-obra { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
 .galeria-obra img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; transition: transform 0.6s ease; }
 .galeria-obra img:hover { transform: scale(1.05); }
@@ -562,6 +559,16 @@ body {
 /* ===========================
    RESPONSIVO
    =========================== */
+@media (max-width: 900px) {
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .sobre-texto h2 { font-size: 2.2rem; }
+  .sobre-video-wrapper { aspect-ratio: 16/9; }
+  .sobre-palavra-fundo { font-size: 4rem; }
+}
+
 @media (max-width: 768px) {
   .nav { display: none; position: absolute; top: 90px; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); flex-direction: column; padding: 24px 0; border-bottom: 1px solid var(--borda-sutil); }
   .nav.ativo { display: flex; }
@@ -590,22 +597,4 @@ body {
   .whatsapp-float { padding: 12px; border-radius: 50%; gap: 0; }
   .whatsapp-text { display: none; }
   .whatsapp-icon svg { width: 24px; height: 24px; }
-}
-
-/* BOTÃO VOLTAR */
-.btn-voltar {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--texto-corpo);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  margin-bottom: 40px;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.btn-voltar:hover {
-  color: var(--verde-principal);
-  transform: translateX(-5px);
 }
