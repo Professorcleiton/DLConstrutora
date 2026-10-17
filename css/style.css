@@ -240,9 +240,40 @@ body {
 @media (max-width: 768px) {
   .whatsapp-float {
     bottom: 20px;
-    right: 20px;
-    padding: 10px 16px;
-    font-size: 0.85rem;
+    right: 15px;
+    left: auto;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    gap: 6px;
+    border-radius: 40px;
+    max-width: calc(100vw - 30px);
+  }
+
+  .whatsapp-text {
+    font-size: 0.8rem;
+  }
+
+  .whatsapp-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Em telas muito pequenas (menos de 400px), esconde o texto */
+@media (max-width: 400px) {
+  .whatsapp-float {
+    padding: 12px;
+    border-radius: 50%;
+    gap: 0;
+  }
+
+  .whatsapp-text {
+    display: none;
+  }
+
+  .whatsapp-icon svg {
+    width: 24px;
+    height: 24px;
   }
 }
 
