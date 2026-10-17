@@ -11,7 +11,8 @@ const resultado = document.getElementById('resultadoObra');
 async function carregarObras() {
   if (obrasCache) return obrasCache;
 
-  const resposta = await fetch('data/obras.json');
+  // O timestamp garante que o navegador não use uma versão antiga do JSON em cache
+  const resposta = await fetch('data/obras.json?v=' + new Date().getTime());
 
   if (!resposta.ok) {
     throw new Error('Falha ao carregar obras.json');
@@ -40,7 +41,12 @@ function limparResultado() {
 function renderizarObra(obra) {
   document.getElementById('nomeObra').textContent = obra.nome;
   document.getElementById('enderecoObra').textContent = obra.endereco;
-  document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
+  
+  // Animação da barra de progresso
+  setTimeout(() => {
+    document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
+  }, 100);
+  
   document.getElementById('percentualObra').textContent = obra.percentual + '% concluído';
 
   renderizarEtapas(obra.etapas);
@@ -56,7 +62,16 @@ function renderizarEtapas(etapas) {
   etapas.forEach(etapa => {
     const li = document.createElement('li');
     li.textContent = etapa.nome;
-    li.className = etapa.concluida ? 'etapa concluida' : 'etapa pendente';
+    
+    // Lógica para os 3 status
+    if (etapa.status === 'concluida') {
+      li.className = 'etapa concluida';
+    } else if (etapa.status === 'andamento') {
+      li.className = 'etapa andamento';
+    } else {
+      li.className = 'etapa pendente';
+    }
+    
     lista.appendChild(li);
   });
 }
@@ -65,13 +80,17 @@ function renderizarGaleria(fotos) {
   const galeria = document.getElementById('galeriaObra');
   galeria.innerHTML = '';
 
-  fotos.forEach(foto => {
-    const img = document.createElement('img');
-    img.src = foto;
-    img.alt = 'Foto da obra';
-    img.loading = 'lazy';
-    galeria.appendChild(img);
-  });
+  if (fotos && fotos.length > 0) {
+    fotos.forEach(foto => {
+      const img = document.createElement('img');
+      img.src = foto;
+      img.alt = 'Foto da obra';
+      img.loading = 'lazy';
+      galeria.appendChild(img);
+    });
+  } else {
+    galeria.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Nenhuma foto adicionada ainda.</p>';
+  }
 }
 
 function mostrarErro(mensagem) {
