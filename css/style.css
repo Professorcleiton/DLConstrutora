@@ -295,20 +295,25 @@ body {
   animation: fadeUp 1s ease-out 0.3s both;
 }
 
+/* ===========================
+   BOTÃO DO HERO (EFEITO VIDRO)
+   =========================== */
 .hero .btn {
-  background: var(--cobre);
-  color: var(--preto-fundo);
-  border: 1px solid var(--cobre);
+  background: rgba(255, 255, 255, 0.1); /* Fundo branco bem transparente */
+  color: var(--branco);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borda branca sutil */
+  backdrop-filter: blur(12px); /* Efeito de vidro */
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Sombra suave para dar profundidade */
   animation: fadeUp 1s ease-out 0.6s both;
-  
-  /* NOVOS AJUSTES AQUI: */
-  margin-top: 40px; /* Desce o botão e afasta do parágrafo */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); /* Cria uma sombra escura que isola o botão do fundo */
+  margin-top: 40px; /* Garante que ele não fique em cima da logo */
 }
 
+/* Efeito ao passar o mouse */
 .hero .btn:hover {
-  background: transparent;
-  color: var(--cobre-claro);
+  background: rgba(255, 255, 255, 0.2); /* Fica um pouco mais claro */
+  border-color: var(--branco);
+  transform: translateY(-3px); /* Levanta um pouquinho */
 }
 
 
