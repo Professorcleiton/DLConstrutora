@@ -311,6 +311,18 @@ body {
   color: var(--cobre-claro);
 }
 
+.hero h1, .hero p {
+  background: rgba(8, 8, 8, 0.5); /* Fundo preto semi-transparente atrás do texto */
+  padding: 10px 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(5px); /* Efeito de vidro */
+  display: inline-block;
+}
+
+.hero p {
+  margin-top: 10px;
+}
+
 /* ===========================
    ANIMAÇÕES DE ENTRADA
    =========================== */
