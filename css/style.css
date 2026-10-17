@@ -429,13 +429,15 @@ body {
   color: #FFFFFF;
 }
 
-/* Lado do Vídeo e Efeito da Palavra */
 .sobre-video-wrapper {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  aspect-ratio: 4/5; /* Formato vertical elegante */
+  
+  /* MUDANÇA AQUI: Formato horizontal */
+  aspect-ratio: 16 / 9; 
+  width: 100%;
 }
 
 .sobre-video {
