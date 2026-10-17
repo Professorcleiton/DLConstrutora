@@ -2,7 +2,7 @@
   "CDO-2025-001": {
     "nome": "Casa Residencial – Jaqueline & Cleiton",
     "endereco": "Bairro Jardim Alvorada, Cruzeiro do Oeste/PR",
-    "percentual": 02,
+    "percentual": 2,
     "etapas": [
       { "nome": "Documentação Inicial", "status": "andamento" }, 
       { "nome": "Fundação", "status": "pendente" },
