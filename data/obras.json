@@ -2,7 +2,7 @@
   "CDO-2026-001": {
     "nome": "Casa Residencial – Jaqueline & Cleiton",
     "endereco": "Bairro Jardim Cruzeiro, Cruzeiro do Oeste/PR",
-    "percentual": 2,
+    "percentual": 3,
     "etapas": [
       { "nome": "Documentação Inicial", "status": "andamento" }, 
       { "nome": "Fundação", "status": "pendente" },
