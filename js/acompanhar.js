@@ -8,18 +8,21 @@ const formAcompanhar = document.getElementById('formAcompanhar');
 const msgErro = document.getElementById('msgErro');
 const resultado = document.getElementById('resultadoObra');
 
-async function carregarObras() {
-  if (obrasCache) return obrasCache;
+// Cole o link gerado pelo Google Apps Script aqui
+const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxRZAkglhLG3opeL920aFci-vzPtB1Un9I5AVkj4E4S6v1amuaPo2WSy9pfuXIRC98d/exec";
 
-  // O timestamp garante que o navegador não use uma versão antiga do JSON em cache
-  const resposta = await fetch('data/obras.json?v=' + new Date().getTime());
-
-  if (!resposta.ok) {
-    throw new Error('Falha ao carregar obras.json');
+async function carregarObras(codigo) {
+  try {
+    // Adicionamos o código na URL para o Google buscar apenas essa obra (mais rápido)
+    const resposta = await fetch(`${URL_PLANILHA}?codigo=${codigo}`);
+    
+    if (!resposta.ok) throw new Error('Erro ao buscar dados no Google.');
+    
+    return await resposta.json();
+  } catch (erro) {
+    console.error("Erro na API:", erro);
+    return null;
   }
-
-  obrasCache = await resposta.json();
-  return obrasCache;
 }
 
 function validarCodigo(codigo) {
