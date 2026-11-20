@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DL Construtora – App da Obra</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#161F2A">
+  <meta name="theme-color" content="#32D235">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,16 +43,16 @@
     /* ---------- TELAS DE ENTRADA ---------- */
     .entrada { min-height: 100vh; display: flex; flex-direction: column; }
     .entrada-topo {
-      background: var(--grafite);
-      background-image: radial-gradient(circle at 50% 0%, rgba(50,210,53,.22), transparent 60%);
-      padding: 48px 24px 88px; text-align: center; color: #fff;
+      background: var(--verde);
+      background-image: radial-gradient(circle at 50% 0%, rgba(255,255,255,.28), transparent 60%);
+      padding: 48px 24px 88px; text-align: center; color: var(--grafite);
     }
-    .entrada-topo img { width: 132px; height: 132px; object-fit: cover; border-radius: 28px; box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+    .entrada-topo img { width: 132px; height: 132px; object-fit: cover; border-radius: 28px; box-shadow: 0 12px 30px rgba(22,31,42,.25); }
     .entrada-topo h1 { font-size: 22px; margin: 18px 0 4px; font-weight: 700; }
-    .entrada-topo p { margin: 0; opacity: .85; font-size: 15px; }
+    .entrada-topo p { margin: 0; opacity: .8; font-size: 15px; font-weight: 500; }
     .entrada-card {
       background: var(--card); width: calc(100% - 32px); max-width: 420px; margin: -56px auto 0;
-      border-radius: 18px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,.08); border-top: 4px solid var(--verde);
+      border-radius: 18px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,.08); border-top: 4px solid var(--grafite);
     }
     .entrada-card h2 { margin: 0 0 4px; font-size: 20px; }
     .entrada-card .sub { margin: 0 0 6px; color: var(--texto); font-size: 14px; }
@@ -65,14 +65,15 @@
     .carregando { min-height: 100vh; display: grid; place-items: center; color: var(--texto); }
 
     /* ---------- APP ---------- */
-    .app-topo { background: var(--grafite); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 5; }
+    .app-topo { background: var(--verde); color: var(--grafite); box-shadow: 0 2px 12px rgba(22,31,42,.12); padding: 12px 16px; position: sticky; top: 0; z-index: 5; }
     .app-topo-linha { max-width: 640px; margin: auto; display: flex; align-items: center; gap: 12px; }
-    .app-topo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+    .app-topo img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
     .app-topo .quem { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
     .app-topo .quem strong { display: block; font-size: 15px; }
-    .app-topo .quem > span { opacity: .85; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .selo { display: inline-block; background: var(--verde); color: var(--grafite); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: .03em; margin-left: 4px; vertical-align: middle; }
-    .btn-sair { background: rgba(255,255,255,.15); color: #fff; padding: 8px 12px; font-size: 14px; }
+    .app-topo .quem > span { opacity: .8; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .selo { display: inline-block; background: var(--grafite); color: var(--verde); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: .03em; margin-left: 4px; vertical-align: middle; }
+    .btn-sair { background: var(--grafite); color: #fff; padding: 8px 14px; font-size: 14px; font-weight: 600; }
+    .btn-sair:hover { background: var(--grafite-2); }
     .abas { max-width: 640px; margin: 12px auto 0; padding: 0 16px; display: flex; gap: 6px; }
     .abas button { flex: 1 1 0; min-width: 0; background: #E9ECEF; color: var(--titulo); font-size: 13px; font-weight: 600; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
     .abas button .ic { font-size: 18px; line-height: 1; }
@@ -189,6 +190,9 @@
     .chip-breve { background: #FEF3C7; color: #8A5A00; }
     .chip-futuro { background: #EEF0F3; color: var(--texto); }
     .ferramentas { margin-top: 12px; }
+    .confirmar-pagamento { margin-top: 10px; padding: 10px 12px; background: var(--verde-suave); border: 1px solid #C5EEC6; border-radius: 10px; }
+    .confirmar-pagamento label { margin-top: 0; }
+    .confirmar-pagamento .acoes { margin-top: 4px; }
     details { border-top: 1px solid var(--borda); padding-top: 10px; margin-top: 10px; }
     summary { cursor: pointer; font-weight: 600; color: var(--verde-texto); font-size: 14px; padding: 4px 0; }
     .linha-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
@@ -390,7 +394,7 @@
     <section id="aba-financeiro" class="aba hidden">
       <div class="card">
         <div class="titulo-linha">
-          <h3>Valores do contrato</h3>
+          <h3>Valor do contrato</h3>
           <button type="button" id="btnEditarValores" class="btn-mini so-equipe">✏️ Editar</button>
         </div>
         <div id="valoresContrato" class="blocos-valor"></div>
@@ -420,9 +424,12 @@
                 <div><label for="parcelaVenc">Vencimento</label><input type="date" id="parcelaVenc" required></div>
                 <div><label for="parcelaValor">Valor</label><input type="text" id="parcelaValor" inputmode="decimal" placeholder="0,00" required></div>
               </div>
+              <label for="parcelaPagoEm">Pago em (deixe vazio se ainda não foi paga)</label>
+              <input type="date" id="parcelaPagoEm">
               <label for="parcelaObs">Observação (opcional)</label>
               <input type="text" id="parcelaObs">
               <button type="submit" class="btn-primario" id="btnSalvarParcela">Adicionar parcela</button>
+              <button type="button" class="btn-secundario hidden" id="btnCancelarParcela">Cancelar edição</button>
             </form>
           </details>
           <details>
@@ -584,6 +591,6 @@
   </main>
 </div>
 
-<script type="module" src="./app.js?v=5"></script>
+<script type="module" src="./app.js?v=6"></script>
 </body>
 </html>

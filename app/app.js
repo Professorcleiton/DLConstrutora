@@ -557,7 +557,7 @@ function desenharValores() {
   const o = fin.obra;
   const bloco = (titulo, v) => el('div', { class: 'bloco' }, el('small', { textContent: titulo }), el('strong', { textContent: v == null ? '—' : dinheiro(v) }));
   $('valoresContrato').replaceChildren(
-    bloco('Valor do contrato', o.valor_contrato),
+    bloco('Valor total', o.valor_contrato),
     bloco('Entrada', o.valor_entrada),
     bloco('Financiamento Caixa', o.valor_financiamento),
   );
@@ -612,8 +612,8 @@ function desenharParcelas() {
     el('div', { class: 'barra' }, el('div', { class: 'barra-cheia', style: `width:${total ? Math.round(pago / total * 100) : 0}%` })),
     resumoLinhas([
       ['Pago', `${dinheiro(pago)} (${pagas} de ${ps.length})`],
-      ['Falta pagar', dinheiro(Math.max(0, total - pago))],
-      ['Total da entrada parcelada', dinheiro(total)],
+      ['A pagar', dinheiro(Math.max(0, total - pago))],
+      ['Total', dinheiro(total)],
     ]),
   );
 
@@ -626,7 +626,7 @@ function desenharParcelas() {
     if (ehEquipe()) {
       acoes.append(p.pago_em
         ? el('button', { textContent: '↩️ Desfazer pagamento', onclick: () => marcarPaga(p, false) })
-        : el('button', { class: 'principal', textContent: '✅ Marcar como paga', onclick: () => marcarPaga(p, true) }));
+        : el('button', { class: 'principal', textContent: '✅ Marcar como paga', onclick: (ev) => pedirDataPagamento(p, ev.currentTarget.closest('li')) }));
       acoes.append(el('button', { textContent: '✏️ Editar', onclick: () => editarParcela(p) }));
       acoes.append(el('button', { class: 'perigo', textContent: 'Excluir', onclick: () => excluirParcela(p) }));
     } else if (!p.pago_em && !fin.comprovantes[p.id]?.length) {
@@ -642,12 +642,31 @@ function desenharParcelas() {
   }));
 }
 
-async function marcarPaga(p, paga) {
+// Abre, dentro da parcela, a escolha da data em que foi paga
+function pedirDataPagamento(p, li) {
+  if (li.querySelector('.confirmar-pagamento')) return;
+  const campo = el('input', { type: 'date', value: isoData(hoje()), max: isoData(hoje()), id: `pago-${p.id}` });
+  const caixa = el('div', { class: 'confirmar-pagamento' },
+    el('label', { htmlFor: campo.id, textContent: 'Data do pagamento' }),
+    campo,
+    el('div', { class: 'acoes' },
+      el('button', { class: 'principal', textContent: 'Confirmar pagamento', onclick: () => {
+        if (!campo.value) return campo.focus();
+        marcarPaga(p, true, campo.value);
+      } }),
+      el('button', { textContent: 'Cancelar', onclick: () => caixa.remove() }),
+    ),
+  );
+  li.append(caixa);
+  campo.focus();
+}
+
+async function marcarPaga(p, paga, data) {
   const { error } = await supabase.from('parcelas').update(paga
-    ? { pago_em: isoData(hoje()), valor_pago: p.valor }
+    ? { pago_em: data || isoData(hoje()), valor_pago: p.valor }
     : { pago_em: null, valor_pago: null }).eq('id', p.id);
   if (error) return mostrarStatus($('statusParcelas'), '❌ ' + traduzirErro(error), 'erro');
-  mostrarStatus($('statusParcelas'), paga ? `✅ Parcela ${p.numero} marcada como paga.` : `Pagamento da parcela ${p.numero} desfeito.`, 'ok');
+  mostrarStatus($('statusParcelas'), paga ? `✅ Parcela ${p.numero} paga em ${dataBR(data || isoData(hoje()))}.` : `Pagamento da parcela ${p.numero} desfeito.`, 'ok');
   carregarFinanceiro();
 }
 
@@ -656,8 +675,10 @@ function editarParcela(p) {
   $('parcelaId').value = p.id;
   $('parcelaVenc').value = p.vencimento;
   $('parcelaValor').value = valorParaCampo(p.valor);
+  $('parcelaPagoEm').value = p.pago_em || '';
   $('parcelaObs').value = p.observacao || '';
   $('btnSalvarParcela').textContent = `Salvar parcela ${p.numero}`;
+  $('btnCancelarParcela').classList.remove('hidden');
   $('parcelaVenc').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
@@ -673,8 +694,15 @@ $('formParcela').addEventListener('submit', async (e) => {
   e.preventDefault();
   const valor = lerValor($('parcelaValor').value);
   if (valor == null) return mostrarStatus($('statusParcelas'), 'Valor inválido.', 'erro');
-  const id = $('parcelaId').value;
-  const dados = { vencimento: $('parcelaVenc').value, valor, observacao: $('parcelaObs').value.trim() || null };
+  const id = Number($('parcelaId').value) || null;
+  const pagoEm = $('parcelaPagoEm').value || null;
+  const dados = {
+    vencimento: $('parcelaVenc').value,
+    valor,
+    pago_em: pagoEm,
+    valor_pago: pagoEm ? valor : null,
+    observacao: $('parcelaObs').value.trim() || null,
+  };
   const { error } = id
     ? await supabase.from('parcelas').update(dados).eq('id', id)
     : await supabase.from('parcelas').insert({
@@ -683,12 +711,18 @@ $('formParcela').addEventListener('submit', async (e) => {
       numero: Math.max(0, ...fin.parcelas.map((p) => p.numero)) + 1,
     });
   if (error) return mostrarStatus($('statusParcelas'), '❌ ' + traduzirErro(error), 'erro');
-  e.target.reset();
-  $('parcelaId').value = '';
-  $('btnSalvarParcela').textContent = 'Adicionar parcela';
+  limparFormParcela();
   mostrarStatus($('statusParcelas'), id ? '✅ Parcela atualizada.' : '✅ Parcela adicionada.', 'ok');
   carregarFinanceiro();
 });
+
+function limparFormParcela() {
+  $('formParcela').reset();
+  $('parcelaId').value = '';
+  $('btnSalvarParcela').textContent = 'Adicionar parcela';
+  $('btnCancelarParcela').classList.add('hidden');
+}
+$('btnCancelarParcela').addEventListener('click', () => { limparFormParcela(); $('detParcela').open = false; });
 
 // Gerar parcelas mensais
 function sugerirGeracao() {
@@ -843,7 +877,7 @@ $('formRepasse').addEventListener('submit', async (e) => {
   e.preventDefault();
   const valor = lerValor($('repasseValor').value);
   if (valor == null) return mostrarStatus($('statusRepasses'), 'Valor inválido.', 'erro');
-  const id = $('repasseId').value;
+  const id = Number($('repasseId').value) || null;
   const dados = { descricao: $('repasseDesc').value.trim(), data_prevista: $('repassePrev').value || null, valor };
   const { error } = id
     ? await supabase.from('repasses').update(dados).eq('id', id)
