@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Enviar Mídia - Acompanhar Obra</title>
-  <link rel="manifest" href="manifest.json">
   <style>
     body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
     .hidden { display: none; }
@@ -12,7 +11,7 @@
     .destino-botoes button { flex: 1; padding: 20px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; }
     .btn-obra { background: #2563eb; color: white; }
     .btn-redes { background: #f59e0b; color: white; }
-    input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+    input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; border-radius: 6px; border: 1px solid #ccc; }
     button { padding: 12px; margin-top: 8px; cursor: pointer; }
   </style>
 </head>
@@ -23,7 +22,7 @@
   <h2>Login</h2>
   <input type="email" id="email" placeholder="E-mail">
   <input type="password" id="senha" placeholder="Senha">
-  <button onclick="fazerLogin()">Entrar</button>
+  <button onclick="fazerLogin()" style="background:#2563eb; color:white; border:none;">Entrar</button>
   <p id="erro-login" style="color:red;"></p>
 </div>
 
@@ -31,8 +30,8 @@
 <div id="tela-envio" class="hidden">
   <h2>Enviar Mídia</h2>
   
-  <label>Obra:</label>
-  <select id="obra-select"></select>
+  <label>Código da Obra (ex: CDO-2026-001):</label>
+  <input type="text" id="codigoObra" placeholder="Digite o código exato" style="text-transform: uppercase;">
 
   <label>Foto ou Vídeo:</label>
   <input type="file" id="arquivo" accept="image/*,video/*" capture="environment">
@@ -56,7 +55,7 @@
   </div>
 
   <p id="status" style="margin-top:16px;"></p>
-  <button onclick="sair()" style="margin-top:24px;">Sair</button>
+  <button onclick="sair()" style="margin-top:24px; background:#ccc; border:none;">Sair</button>
 </div>
 
 <script type="module" src="./app.js"></script>
