@@ -1,9 +1,14 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Suas chaves do Supabase
+// CONFIGURAÇÃO DO SUPABASE
 const SUPABASE_URL = 'https://sbynpvhsbnzqicgutsaw.supabase.co'; 
-const SUPABASE_ANON_KEY = 'SUA_CHAVE_ANON_AQUI'; 
+const SUPABASE_ANON_KEY = 'sb_publishable_xVkg_aTYnEvHZOzqNhg38A_0aTD6Kgs'; 
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ===========================
+// ACOMPANHAR OBRA
+// ===========================
 
 let obrasCache = null;
 
@@ -11,7 +16,7 @@ const formAcompanhar = document.getElementById('formAcompanhar');
 const msgErro = document.getElementById('msgErro');
 const resultado = document.getElementById('resultadoObra');
 
-// URL do seu Google Apps Script para os dados BÁSICOS (nome, endereço, etapas)
+// URL do seu Google Apps Script (MANTIDA A SUA URL ORIGINAL)
 const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxRZAkglhLG3opeL920aFci-vzPtB1Un9I5AVkj4E4S6v1amuaPo2WSy9pfuXIRC98d/exec";
 
 async function carregarObras(codigo) {
@@ -20,13 +25,13 @@ async function carregarObras(codigo) {
     if (!resposta.ok) throw new Error('Erro ao buscar dados no Google.');
     return await resposta.json();
   } catch (erro) {
-    console.error("Erro na API:", erro);
+    console.error("Erro na API do Google:", erro);
     return null;
   }
 }
 
-// NOVA FUNÇÃO: Busca as fotos no Supabase
-async function buscarFotosSupabase(codigo) {
+// NOVA FUNÇÃO: Busca as fotos e vídeos no Supabase
+async function buscarMidiasSupabase(codigo) {
   const { data, error } = await supabase
     .from('midias')
     .select('url, tipo, legenda')
@@ -35,14 +40,16 @@ async function buscarFotosSupabase(codigo) {
     .order('data_envio', { ascending: false });
 
   if (error) {
-    console.error("Erro ao buscar fotos:", error);
+    console.error("Erro ao buscar fotos no Supabase:", error);
     return [];
   }
   return data;
 }
 
 function validarCodigo(codigo) {
-  if (!codigo) return 'Digite um código de obra.';
+  if (!codigo) {
+    return 'Digite um código de obra.';
+  }
   return null;
 }
 
@@ -59,6 +66,7 @@ async function renderizarObra(obra, codigo) {
   document.getElementById('nomeObra').textContent = obra.nome;
   document.getElementById('enderecoObra').textContent = obra.endereco;
   
+  // Animação da barra de progresso
   setTimeout(() => {
     document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
   }, 100);
@@ -67,9 +75,9 @@ async function renderizarObra(obra, codigo) {
 
   renderizarEtapas(obra.etapas);
   
-  // AQUI: Busca as fotos no Supabase em vez de usar as do Google Sheets
-  const fotosSupabase = await buscarFotosSupabase(codigo);
-  renderizarGaleria(fotosSupabase);
+  // AQUI: Busca as fotos no Supabase em vez de usar as fotos do Google Sheets
+  const midiasSupabase = await buscarMidiasSupabase(codigo);
+  renderizarGaleria(midiasSupabase);
 
   resultado.style.display = 'block';
 }
@@ -77,12 +85,20 @@ async function renderizarObra(obra, codigo) {
 function renderizarEtapas(etapas) {
   const lista = document.getElementById('listaEtapas');
   lista.innerHTML = '';
+
   etapas.forEach(etapa => {
     const li = document.createElement('li');
     li.textContent = etapa.nome;
-    if (etapa.status === 'concluida') li.className = 'etapa concluida';
-    else if (etapa.status === 'andamento') li.className = 'etapa andamento';
-    else li.className = 'etapa pendente';
+    
+    // Lógica para os 3 status
+    if (etapa.status === 'concluida') {
+      li.className = 'etapa concluida';
+    } else if (etapa.status === 'andamento') {
+      li.className = 'etapa andamento';
+    } else {
+      li.className = 'etapa pendente';
+    }
+    
     lista.appendChild(li);
   });
 }
@@ -99,6 +115,10 @@ function renderizarGaleria(midias) {
         img.src = midia.url;
         img.alt = midia.legenda || 'Foto da obra';
         img.loading = 'lazy';
+        // Adiciona um estilo básico caso o CSS do site não pegue
+        img.style.width = '100%';
+        img.style.borderRadius = '8px';
+        img.style.marginBottom = '10px';
         galeria.appendChild(img);
       } else {
         const video = document.createElement('video');
@@ -106,6 +126,7 @@ function renderizarGaleria(midias) {
         video.controls = true;
         video.style.width = '100%';
         video.style.borderRadius = '8px';
+        video.style.marginBottom = '10px';
         galeria.appendChild(video);
       }
     });
