@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enviar Mídia - Acompanhar Obra</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+    .hidden { display: none; }
+    .destino-botoes { display: flex; gap: 12px; margin-top: 16px; }
+    .destino-botoes button { flex: 1; padding: 20px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; }
+    .btn-obra { background: #2563eb; color: white; }
+    .btn-redes { background: #f59e0b; color: white; }
+    input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+    button { padding: 12px; margin-top: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<!-- Tela de Login -->
+<div id="tela-login">
+  <h2>Login</h2>
+  <input type="email" id="email" placeholder="E-mail">
+  <input type="password" id="senha" placeholder="Senha">
+  <button onclick="fazerLogin()">Entrar</button>
+  <p id="erro-login" style="color:red;"></p>
+</div>
+
+<!-- Tela de Envio -->
+<div id="tela-envio" class="hidden">
+  <h2>Enviar Mídia</h2>
+  
+  <label>Obra:</label>
+  <select id="obra-select"></select>
+
+  <label>Foto ou Vídeo:</label>
+  <input type="file" id="arquivo" accept="image/*,video/*" capture="environment">
+
+  <label>Legenda (opcional):</label>
+  <textarea id="legenda" rows="2"></textarea>
+
+  <label>Categoria (opcional):</label>
+  <select id="categoria">
+    <option value="">--</option>
+    <option value="estrutura">Estrutura</option>
+    <option value="acabamento">Acabamento</option>
+    <option value="instalacao">Instalação</option>
+    <option value="antes-depois">Antes/Depois</option>
+  </select>
+
+  <p><strong>O que fazer com esta mídia?</strong></p>
+  <div class="destino-botoes">
+    <button class="btn-obra" onclick="enviar('obra')">🏗️ Publicar em Acompanhar Obra</button>
+    <button class="btn-redes" onclick="enviar('redes')">📱 Enviar para Redes Sociais</button>
+  </div>
+
+  <p id="status" style="margin-top:16px;"></p>
+  <button onclick="sair()" style="margin-top:24px;">Sair</button>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
