@@ -1,5 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { montarBetoneira } from './betoneira.js?v=1';
+import { montarGuindaste } from './guindaste.js?v=1';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -101,7 +101,7 @@ function renderizarEntrega(obra) {
   info.append(linha1, linha2);
   caixaPrazo.append(numero, info);
   caixaPrazo.hidden = false;
-  montarBetoneira(numero, dias);
+  montarGuindaste(numero, dias);
 }
 
 function renderizarEtapas(etapas) {
