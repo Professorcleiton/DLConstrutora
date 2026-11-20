@@ -5,6 +5,42 @@
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
+-- 0. TABELA "obras" ANTIGA (id, nome, percentual, slug)
+--    Se existir uma tabela obras sem a coluna "codigo", ela é guardada
+--    com o nome obras_antiga (nada é apagado). Ligações (foreign keys)
+--    de outras tabelas para ela são removidas, para não travar o app.
+-- ---------------------------------------------------------------------
+do $$
+declare fk record;
+begin
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'obras')
+     and not exists (select 1 from information_schema.columns
+             where table_schema = 'public' and table_name = 'obras' and column_name = 'codigo')
+  then
+    if exists (select 1 from information_schema.tables
+               where table_schema = 'public' and table_name = 'obras_antiga') then
+      raise exception 'Já existe uma tabela obras_antiga. Renomeie ou apague uma delas e rode de novo.';
+    end if;
+
+    for fk in
+      select c.conname, c.conrelid::regclass as tabela
+      from pg_constraint c
+      where c.contype = 'f'
+        and c.confrelid = 'public.obras'::regclass
+        and c.conrelid <> 'public.obras'::regclass
+    loop
+      execute format('alter table %s drop constraint %I', fk.tabela, fk.conname);
+      raise notice 'Removida ligação % da tabela %', fk.conname, fk.tabela;
+    end loop;
+
+    alter table public.obras rename to obras_antiga;
+    alter table public.obras_antiga enable row level security;
+    raise notice 'Tabela obras antiga guardada como obras_antiga';
+  end if;
+end $$;
+
+-- ---------------------------------------------------------------------
 -- 1. TABELA DE OBRAS
 -- ---------------------------------------------------------------------
 create table if not exists public.obras (
@@ -148,13 +184,16 @@ where not exists (select 1 from public.etapas e where e.obra_codigo = v.codigo);
 
 -- Fotos antigas que ficam no próprio site (pasta img/obras)
 insert into public.midias (obra_codigo, url, tipo, legenda, destino, data_envio)
-select v.codigo, v.url, 'foto', null, 'obra', now() - interval '30 days'
+select v.codigo, v.url, 'foto', null, 'obra', now() - interval '30 days' - v.n * interval '1 minute'
 from (values
-  ('CDO-2026-001', 'img/obras/001-foto1.jpeg'),
-  ('CDO-2026-001', 'img/obras/001-foto2.jpeg'),
-  ('CDO-2026-001', 'img/obras/001-foto3.jpeg')
-) as v(codigo, url)
+  ('CDO-2026-001', 'img/obras/001-foto1.jpeg', 1),
+  ('CDO-2026-001', 'img/obras/001-foto2.jpeg', 2),
+  ('CDO-2026-001', 'img/obras/001-foto3.jpeg', 3)
+) as v(codigo, url, n)
 where not exists (select 1 from public.midias m where m.url = v.url);
+
+-- Grava automaticamente quem enviou cada mídia (usuário logado no app)
+alter table public.midias alter column enviado_por set default auth.uid();
 
 -- Corrige códigos de mídias já enviadas que tenham espaço ou letra minúscula
 update public.midias set obra_codigo = upper(trim(obra_codigo))
