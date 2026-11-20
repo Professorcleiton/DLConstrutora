@@ -17,7 +17,7 @@ supabase.auth.getSession().then(({ data: { session } }) => {
 
 // Função de Login
 window.fazerLogin = async function() {
-  const email = document.getElementById('email').value;
+  const email = document.getElementById('email').value.trim(); // .trim() remove espaços acidentais
   const senha = document.getElementById('senha').value;
   const btn = document.querySelector('#tela-login button');
   const erroMsg = document.getElementById('erro-login');
@@ -52,6 +52,7 @@ window.enviar = async function(destino) {
   const btnObra = document.querySelector('.btn-obra');
   const btnRedes = document.querySelector('.btn-redes');
   
+  // Pega o código e força para maiúsculo (ex: CDO-2026-001)
   const codigo = document.getElementById('codigoObra').value.trim().toUpperCase();
   const arquivo = document.getElementById('arquivo').files[0];
   const legenda = document.getElementById('legenda').value;
@@ -84,7 +85,7 @@ window.enviar = async function(destino) {
     // 3. Detecta o tipo
     const tipo = arquivo.type.startsWith('video') ? 'video' : 'foto';
 
-    // 4. Insere no banco de dados
+    // 4. Insere no banco de dados (usando a coluna obra_codigo)
     const { error: erroInsert } = await supabase.from('midias').insert({
       obra_codigo: codigo,
       url: urlData.publicUrl,
