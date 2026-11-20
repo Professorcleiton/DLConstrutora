@@ -91,8 +91,8 @@ body {
 .header.scrolled .container { height: 70px; }
 
 .logo { display: flex; align-items: center; text-decoration: none; }
-.logo-img { height: 55px; width: auto; aspect-ratio: 1; transition: height 0.4s ease, transform 0.3s ease; border-radius: 6px; }
-.header.scrolled .logo-img { height: 45px; }
+.logo-img { height: 70px; width: auto; display: block; transition: height 0.4s ease, transform 0.3s ease; }
+.header.scrolled .logo-img { height: 56px; }
 .logo-img:hover { transform: scale(1.05); }
 
 .nav { display: flex; align-items: center; }
@@ -645,8 +645,8 @@ body {
   .banner-entrega strong { font-size: 1.2rem; }
   .header .container { height: 75px; }
   .header.scrolled .container { height: 65px; }
-  .logo-img { height: 45px; }
-  .header.scrolled .logo-img { height: 40px; }
+  .logo-img { height: 58px; }
+  .header.scrolled .logo-img { height: 50px; }
 }
 
 @media (max-width: 400px) {
