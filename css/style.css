@@ -13,13 +13,16 @@
 :root {
   --fundo-site: #F8F9FA;      /* Cinza gelo muito claro */
   --fundo-card: #FFFFFF;      /* Branco puro para os cards */
-  --texto-titulo: #111111;    /* Quase preto para leitura */
+  --texto-titulo: #161F2A;    /* Grafite da logo */
   --texto-corpo: #555555;     /* Cinza médio */
   
-  --verde-principal: #0F5C26; /* Verde escuro da logo */
-  --verde-hover: #1B8A3A;     
-  --cobre: #C08A5E;           /* Detalhe de luxo */
-  --cobre-escuro: #A06B42;
+  /* Paleta da logo nova */
+  --verde-marca: #32D235;     /* Verde da logo: fundos de botões (texto grafite) */
+  --verde-marca-hover: #2BBD2E;
+  --verde-principal: #157F1A; /* Verde escuro: textos e linhas sobre branco */
+  --verde-hover: #106614;
+  --grafite: #161F2A;         /* Letras da logo */
+  --grafite-2: #24303E;
   
   --vidro-bg: rgba(255, 255, 255, 0.85); /* Header de vidro claro */
   --borda-sutil: rgba(0, 0, 0, 0.08);
@@ -28,8 +31,8 @@
   --_access-icon-right: auto;
   --_access-icon-left: 20px;
   --_access-icon-bottom: 20px;
-  --_access-icon-bg: #0F5C26;
-  --_access-icon-color: #C08A5E;
+  --_access-icon-bg: #161F2A;
+  --_access-icon-color: #32D235;
 }
 
 body {
@@ -55,7 +58,7 @@ body {
   left: 0;
   height: 3px;
   width: 0%;
-  background: linear-gradient(90deg, var(--verde-principal), var(--cobre));
+  background: linear-gradient(90deg, var(--verde-principal), var(--verde-marca));
   z-index: 9999;
   transition: width 0.1s ease-out;
 }
@@ -77,7 +80,7 @@ body {
 .header.scrolled {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(192, 138, 94, 0.3);
+  border-bottom: 2px solid var(--verde-marca);
 }
 
 .header .container {
@@ -91,7 +94,7 @@ body {
 .header.scrolled .container { height: 70px; }
 
 .logo { display: flex; align-items: center; text-decoration: none; }
-.logo-img { height: 55px; width: auto; transition: height 0.4s ease, transform 0.3s ease; border-radius: 6px; }
+.logo-img { height: 55px; width: auto; aspect-ratio: 1; transition: height 0.4s ease, transform 0.3s ease; border-radius: 6px; }
 .header.scrolled .logo-img { height: 45px; }
 .logo-img:hover { transform: scale(1.05); }
 
@@ -124,7 +127,7 @@ body {
 /* REDES SOCIAIS */
 .social-header { display: flex; align-items: center; gap: 16px; margin-left: 24px; }
 .social-header a { color: var(--texto-titulo); transition: color 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
-.social-header a:hover { color: var(--cobre); transform: translateY(-2px); }
+.social-header a:hover { color: var(--verde-principal); transform: translateY(-2px); }
 
 .social-footer { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
 .social-footer a { color: var(--texto-corpo); transition: color 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
@@ -294,7 +297,7 @@ body {
   display: block;
   width: 40px;
   height: 3px;
-  background: var(--verde-principal);
+  background: var(--verde-marca);
   margin: 20px auto 0;
   border-radius: 2px;
 }
@@ -311,7 +314,7 @@ body {
   transition: all 0.4s ease;
 }
 
-.card-servico:hover { transform: translateY(-8px); border-color: var(--cobre); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); }
+.card-servico:hover { transform: translateY(-8px); border-color: var(--verde-marca); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); }
 .card-servico h3 { color: var(--texto-titulo); margin-bottom: 14px; font-weight: 600; }
 .card-servico p { color: var(--texto-corpo); }
 
@@ -322,19 +325,19 @@ body {
   background: var(--fundo-site); border: 1px solid var(--borda-sutil);
   transition: transform 0.4s ease, border-color 0.4s ease;
 }
-.passo:hover { transform: translateY(-6px); border-color: var(--verde-principal); }
+.passo:hover { transform: translateY(-6px); border-color: var(--verde-marca); }
 .passo .numero {
   display: inline-flex; align-items: center; justify-content: center;
   width: 50px; height: 50px; border-radius: 50%;
-  background: var(--verde-principal); color: #FFF;
+  background: var(--verde-marca); color: var(--grafite);
   font-weight: 700; font-size: 1.3rem; margin-bottom: 18px;
 }
 .passo h3 { color: var(--texto-titulo); margin-bottom: 10px; font-weight: 600; }
 .passo p { color: var(--texto-corpo); font-size: 0.95rem; }
 .destaque-financiamento {
   text-align: center; max-width: 800px; margin: 0 auto; padding: 30px;
-  background: rgba(15, 92, 38, 0.05); color: var(--texto-titulo);
-  border-radius: 8px; font-size: 1.1rem; border-left: 4px solid var(--verde-principal);
+  background: rgba(50, 210, 53, 0.08); color: var(--texto-titulo);
+  border-radius: 8px; font-size: 1.1rem; border-left: 4px solid var(--verde-marca);
 }
 .destaque-financiamento strong { color: var(--verde-principal); }
 
@@ -350,7 +353,7 @@ body {
    SEÇÃO SOBRE (ESTILO EDITORIAL)
    =========================== */
 .sobre-novo {
-  background: #111111;
+  background: var(--grafite);
   padding: 120px 0;
   color: #FFFFFF;
   overflow: hidden;
@@ -368,7 +371,7 @@ body {
 
 .tag-sobre {
   display: inline-block;
-  color: #C08A5E;
+  color: var(--verde-marca);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -385,7 +388,7 @@ body {
   text-align: left;
 }
 
-.sobre-texto h2 strong { color: #1B8A3A; font-weight: 700; }
+.sobre-texto h2 strong { color: var(--verde-marca); font-weight: 700; }
 
 .sobre-texto p {
   font-size: 1.1rem;
@@ -396,10 +399,10 @@ body {
 
 .sobre-lista { list-style: none; margin-bottom: 40px; }
 .sobre-lista li { position: relative; padding-left: 30px; margin-bottom: 16px; color: #D0D0D0; font-size: 1.05rem; }
-.sobre-lista li::before { content: '✓'; position: absolute; left: 0; color: #1B8A3A; font-weight: bold; }
+.sobre-lista li::before { content: '✓'; position: absolute; left: 0; color: var(--verde-marca); font-weight: bold; }
 
-.btn-sobre { background: #FFFFFF; color: #111111; border: 1px solid #FFFFFF; }
-.btn-sobre:hover { background: transparent; color: #FFFFFF; }
+.btn-sobre { background: var(--verde-marca); color: var(--grafite); border: 1px solid var(--verde-marca); }
+.btn-sobre:hover { background: transparent; color: var(--verde-marca); }
 
 .sobre-video-wrapper {
   position: relative; border-radius: 12px; overflow: hidden;
@@ -423,18 +426,18 @@ body {
   background: #FFF; color: var(--texto-titulo); font-size: 1rem; font-family: inherit; transition: border-color 0.3s ease;
 }
 .contato input:focus, .contato select:focus, .contato textarea:focus {
-  outline: none; border-color: var(--verde-principal); box-shadow: 0 0 0 3px rgba(15, 92, 38, 0.1);
+  outline: none; border-color: var(--verde-principal); box-shadow: 0 0 0 3px rgba(50, 210, 53, 0.25);
 }
 .contato textarea { min-height: 130px; resize: vertical; }
-.contato .btn { background: var(--verde-principal); color: #FFF; border: 1px solid var(--verde-principal); }
-.contato .btn:hover { background: var(--verde-hover); border-color: var(--verde-hover); }
+.contato .btn { background: var(--verde-marca); color: var(--grafite); border: 1px solid var(--verde-marca); }
+.contato .btn:hover { background: var(--verde-marca-hover); border-color: var(--verde-marca-hover); }
 .msg-sucesso { text-align: center; color: var(--verde-principal); margin-top: 20px; font-weight: 600; }
 
 /* ===========================
    ACOMPANHAR OBRA (TIMELINE)
    =========================== */
 .acompanhar h1 { text-align: center; font-size: 2.5rem; margin-bottom: 12px; color: var(--texto-titulo); }
-.acompanhar h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--verde-principal); margin: 20px auto 0; border-radius: 2px; }
+.acompanhar h1::after { content: ''; display: block; width: 40px; height: 3px; background: var(--verde-marca); margin: 20px auto 0; border-radius: 2px; }
 .subtitulo { text-align: center; color: var(--texto-corpo); margin-bottom: 50px; }
 
 /* Botão Voltar */
@@ -449,11 +452,12 @@ body {
 .form-acompanhar { max-width: 560px; margin: 0 auto 30px; display: flex; gap: 12px; }
 .form-acompanhar input { flex: 1; padding: 16px 20px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 1rem; background: #FFF; color: var(--texto-titulo); }
 .form-acompanhar input:focus { outline: none; border-color: var(--verde-principal); }
-.form-acompanhar .btn { background: var(--verde-principal); border-color: var(--verde-principal); color: #FFF; }
+.form-acompanhar .btn { background: var(--verde-marca); border: 1px solid var(--verde-marca); color: var(--grafite); }
+.form-acompanhar .btn:hover { background: var(--verde-marca-hover); }
 
 .resultado-obra {
   max-width: 800px; margin: 50px auto 0; background: #FFF; padding: 50px;
-  border-radius: 8px; border: 1px solid var(--borda-sutil); border-left: 4px solid var(--verde-principal);
+  border-radius: 8px; border: 1px solid var(--borda-sutil); border-left: 4px solid var(--verde-marca);
   box-shadow: 0 10px 40px rgba(0,0,0,0.05);
   animation: fadeUp 0.6s ease-out both;
 }
@@ -461,7 +465,7 @@ body {
 .resultado-obra h3 { color: var(--texto-titulo); margin: 28px 0 16px; font-weight: 600; }
 .resultado-obra p { color: var(--texto-corpo); }
 .barra-progresso { width: 100%; height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin: 30px 0 12px; }
-.progresso-preenchido { height: 100%; background: linear-gradient(90deg, var(--verde-principal), var(--verde-hover)); transition: width 1.2s ease; border-radius: 4px; }
+.progresso-preenchido { height: 100%; background: linear-gradient(90deg, var(--verde-principal), var(--verde-marca)); transition: width 1.2s ease; border-radius: 4px; }
 .percentual { text-align: right; font-weight: 600; color: var(--verde-principal); margin-bottom: 25px; }
 
 /* Linha do Tempo */
@@ -531,19 +535,19 @@ body {
 }
 
 .etapa.andamento {
-  color: var(--cobre-escuro);
+  color: var(--texto-titulo);
   font-weight: 700;
 }
 .etapa.andamento::before {
-  background: var(--cobre);
-  box-shadow: 0 0 0 4px rgba(192, 138, 94, 0.3);
+  background: var(--verde-marca);
+  box-shadow: 0 0 0 4px rgba(50, 210, 53, 0.3);
   animation: pulse-etapa 1.5s infinite;
 }
 
 @keyframes pulse-etapa {
-  0% { box-shadow: 0 0 0 0 rgba(192, 138, 94, 0.5); }
-  70% { box-shadow: 0 0 0 8px rgba(192, 138, 94, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(192, 138, 94, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(50, 210, 53, 0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(50, 210, 53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(50, 210, 53, 0); }
 }
 
 .etapa.pendente { color: #9CA3AF; }
