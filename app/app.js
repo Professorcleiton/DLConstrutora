@@ -1,96 +1,124 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const SUPABASE_URL = 'COLE_AQUI_SUA_PROJECT_URL';
-const SUPABASE_ANON_KEY = 'COLE_AQUI_SUA_ANON_KEY';
+// CONFIGURAÇÃO DO SUPABASE
+const SUPABASE_URL = 'https://sbynpvhsbnzqicgutsaw.supabase.co'; 
+const SUPABASE_ANON_KEY = 'sb_publishable_xVkg_aTYnEvHZOzqNhg38A_0aTD6Kgs'; 
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Verifica se já está logado
+// ===========================
+// LÓGICA DO APP DE ENVIO
+// ===========================
+
+// Verifica se o usuário já está logado ao abrir a página
 supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) mostrarEnvio();
 });
 
-async function fazerLogin() {
+// Função de Login
+window.fazerLogin = async function() {
   const email = document.getElementById('email').value;
   const senha = document.getElementById('senha').value;
+  const btn = document.querySelector('#tela-login button');
+  const erroMsg = document.getElementById('erro-login');
   
+  if(!email || !senha) {
+    erroMsg.textContent = 'Preencha e-mail e senha.';
+    return;
+  }
+
+  btn.textContent = 'Entrando...';
+  erroMsg.textContent = '';
+
   const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
   
   if (error) {
-    document.getElementById('erro-login').textContent = 'Erro: ' + error.message;
+    erroMsg.textContent = 'Erro: ' + (error.message === 'Invalid login credentials' ? 'E-mail ou senha incorretos.' : error.message);
+    btn.textContent = 'Entrar';
   } else {
     mostrarEnvio();
   }
 }
 
-async function mostrarEnvio() {
+// Alterna as telas
+function mostrarEnvio() {
   document.getElementById('tela-login').classList.add('hidden');
   document.getElementById('tela-envio').classList.remove('hidden');
-  
-  // Carrega obras
-  const { data: obras } = await supabase.from('obras').select('id, nome');
-  const select = document.getElementById('obra-select');
-  select.innerHTML = obras.map(o => `<option value="${o.id}">${o.nome}</option>`).join('');
 }
 
-async function enviar(destino) {
+// Função de Envio da Mídia
+window.enviar = async function(destino) {
   const status = document.getElementById('status');
+  const btnObra = document.querySelector('.btn-obra');
+  const btnRedes = document.querySelector('.btn-redes');
+  
+  const codigo = document.getElementById('codigoObra').value.trim().toUpperCase();
   const arquivo = document.getElementById('arquivo').files[0];
-  const obraId = document.getElementById('obra-select').value;
   const legenda = document.getElementById('legenda').value;
-  const categoria = document.getElementById('categoria').value;
 
-  if (!arquivo) {
-    status.textContent = 'Selecione uma foto ou vídeo primeiro.';
+  if (!codigo || !arquivo) {
+    status.textContent = "Preencha o código da obra e selecione um arquivo.";
+    status.style.color = "red";
     return;
   }
 
-  status.textContent = 'Enviando...';
+  status.textContent = "Enviando... aguarde.";
+  status.style.color = "black";
+  
+  // Desabilita botões para evitar envio duplo
+  btnObra.disabled = true;
+  btnRedes.disabled = true;
+  btnObra.style.opacity = '0.5';
+  btnRedes.style.opacity = '0.5';
 
-  // 1. Upload do arquivo para o Storage
-  const nomeArquivo = `${Date.now()}-${arquivo.name}`;
-  const { error: erroUpload } = await supabase.storage
-    .from('midias')
-    .upload(nomeArquivo, arquivo);
+  try {
+    // 1. Upload do arquivo para o Storage do Supabase
+    const nomeArquivo = `${Date.now()}-${arquivo.name.replace(/\s/g, '_')}`;
+    const { error: erroUpload } = await supabase.storage.from('midias').upload(nomeArquivo, arquivo);
 
-  if (erroUpload) {
-    status.textContent = 'Erro no upload: ' + erroUpload.message;
-    return;
-  }
+    if (erroUpload) throw new Error("Erro no upload: " + erroUpload.message);
 
-  // 2. Pega a URL pública do arquivo
-  const { data: urlData } = supabase.storage.from('midias').getPublicUrl(nomeArquivo);
+    // 2. Pega a URL pública da imagem/vídeo
+    const { data: urlData } = supabase.storage.from('midias').getPublicUrl(nomeArquivo);
 
-  // 3. Detecta o tipo
-  const tipo = arquivo.type.startsWith('video') ? 'video' : 'foto';
+    // 3. Detecta o tipo
+    const tipo = arquivo.type.startsWith('video') ? 'video' : 'foto';
 
-  // 4. Insere no banco
-  const { error: erroInsert } = await supabase.from('midias').insert({
-    obra_id: obraId,
-    url: urlData.publicUrl,
-    tipo: tipo,
-    legenda: legenda || null,
-    categoria: categoria || null,
-    destino: destino
-  });
+    // 4. Insere no banco de dados
+    const { error: erroInsert } = await supabase.from('midias').insert({
+      obra_codigo: codigo,
+      url: urlData.publicUrl,
+      tipo: tipo,
+      legenda: legenda || null,
+      destino: destino
+    });
 
-  if (erroInsert) {
-    status.textContent = 'Erro ao salvar: ' + erroInsert.message;
-  } else {
+    if (erroInsert) throw new Error("Erro ao salvar no banco: " + erroInsert.message);
+
+    // Sucesso
     status.textContent = destino === 'obra' 
-      ? '✅ Publicado na página Acompanhar Obra!' 
-      : '✅ Enviado para redes sociais!';
+      ? "✅ Publicado na página Acompanhar Obra!" 
+      : "✅ Enviado para Redes Sociais!";
+    status.style.color = "green";
+    
+    // Limpa os campos
     document.getElementById('arquivo').value = '';
     document.getElementById('legenda').value = '';
+
+  } catch (erro) {
+    status.textContent = "❌ " + erro.message;
+    status.style.color = "red";
+  } finally {
+    // Reabilita botões
+    btnObra.disabled = false;
+    btnRedes.disabled = false;
+    btnObra.style.opacity = '1';
+    btnRedes.style.opacity = '1';
   }
 }
 
-async function sair() {
+// Função de Sair
+window.sair = async function() {
   await supabase.auth.signOut();
   location.reload();
 }
-
-// Expõe funções para os botões HTML
-window.fazerLogin = fazerLogin;
-window.enviar = enviar;
-window.sair = sair;
