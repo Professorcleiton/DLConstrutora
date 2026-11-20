@@ -557,7 +557,7 @@ function desenharValores() {
   const o = fin.obra;
   const bloco = (titulo, v) => el('div', { class: 'bloco' }, el('small', { textContent: titulo }), el('strong', { textContent: v == null ? '—' : dinheiro(v) }));
   $('valoresContrato').replaceChildren(
-    bloco('Valor total', o.valor_contrato),
+    bloco('Total', o.valor_contrato),
     bloco('Entrada', o.valor_entrada),
     bloco('Financiamento Caixa', o.valor_financiamento),
   );
