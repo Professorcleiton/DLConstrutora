@@ -1,6 +1,9 @@
-// ===========================
-// ACOMPANHAR OBRA
-// ===========================
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// Suas chaves do Supabase
+const SUPABASE_URL = 'https://sbynpvhsbnzqicgutsaw.supabase.co'; 
+const SUPABASE_ANON_KEY = 'SUA_CHAVE_ANON_AQUI'; 
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let obrasCache = null;
 
@@ -8,16 +11,13 @@ const formAcompanhar = document.getElementById('formAcompanhar');
 const msgErro = document.getElementById('msgErro');
 const resultado = document.getElementById('resultadoObra');
 
-// Cole o link gerado pelo Google Apps Script aqui
+// URL do seu Google Apps Script para os dados BÁSICOS (nome, endereço, etapas)
 const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxRZAkglhLG3opeL920aFci-vzPtB1Un9I5AVkj4E4S6v1amuaPo2WSy9pfuXIRC98d/exec";
 
 async function carregarObras(codigo) {
   try {
-    // Adicionamos o código na URL para o Google buscar apenas essa obra (mais rápido)
     const resposta = await fetch(`${URL_PLANILHA}?codigo=${codigo}`);
-    
     if (!resposta.ok) throw new Error('Erro ao buscar dados no Google.');
-    
     return await resposta.json();
   } catch (erro) {
     console.error("Erro na API:", erro);
@@ -25,10 +25,24 @@ async function carregarObras(codigo) {
   }
 }
 
-function validarCodigo(codigo) {
-  if (!codigo) {
-    return 'Digite um código de obra.';
+// NOVA FUNÇÃO: Busca as fotos no Supabase
+async function buscarFotosSupabase(codigo) {
+  const { data, error } = await supabase
+    .from('midias')
+    .select('url, tipo, legenda')
+    .eq('obra_codigo', codigo)
+    .eq('destino', 'obra')
+    .order('data_envio', { ascending: false });
+
+  if (error) {
+    console.error("Erro ao buscar fotos:", error);
+    return [];
   }
+  return data;
+}
+
+function validarCodigo(codigo) {
+  if (!codigo) return 'Digite um código de obra.';
   return null;
 }
 
@@ -41,11 +55,10 @@ function limparResultado() {
   resultado.style.display = 'none';
 }
 
-function renderizarObra(obra) {
+async function renderizarObra(obra, codigo) {
   document.getElementById('nomeObra').textContent = obra.nome;
   document.getElementById('enderecoObra').textContent = obra.endereco;
   
-  // Animação da barra de progresso
   setTimeout(() => {
     document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
   }, 100);
@@ -53,7 +66,10 @@ function renderizarObra(obra) {
   document.getElementById('percentualObra').textContent = obra.percentual + '% concluído';
 
   renderizarEtapas(obra.etapas);
-  renderizarGaleria(obra.fotos);
+  
+  // AQUI: Busca as fotos no Supabase em vez de usar as do Google Sheets
+  const fotosSupabase = await buscarFotosSupabase(codigo);
+  renderizarGaleria(fotosSupabase);
 
   resultado.style.display = 'block';
 }
@@ -61,35 +77,37 @@ function renderizarObra(obra) {
 function renderizarEtapas(etapas) {
   const lista = document.getElementById('listaEtapas');
   lista.innerHTML = '';
-
   etapas.forEach(etapa => {
     const li = document.createElement('li');
     li.textContent = etapa.nome;
-    
-    // Lógica para os 3 status
-    if (etapa.status === 'concluida') {
-      li.className = 'etapa concluida';
-    } else if (etapa.status === 'andamento') {
-      li.className = 'etapa andamento';
-    } else {
-      li.className = 'etapa pendente';
-    }
-    
+    if (etapa.status === 'concluida') li.className = 'etapa concluida';
+    else if (etapa.status === 'andamento') li.className = 'etapa andamento';
+    else li.className = 'etapa pendente';
     lista.appendChild(li);
   });
 }
 
-function renderizarGaleria(fotos) {
+// Adaptada para aceitar fotos e vídeos do Supabase
+function renderizarGaleria(midias) {
   const galeria = document.getElementById('galeriaObra');
   galeria.innerHTML = '';
 
-  if (fotos && fotos.length > 0) {
-    fotos.forEach(foto => {
-      const img = document.createElement('img');
-      img.src = foto;
-      img.alt = 'Foto da obra';
-      img.loading = 'lazy';
-      galeria.appendChild(img);
+  if (midias && midias.length > 0) {
+    midias.forEach(midia => {
+      if (midia.tipo === 'foto') {
+        const img = document.createElement('img');
+        img.src = midia.url;
+        img.alt = midia.legenda || 'Foto da obra';
+        img.loading = 'lazy';
+        galeria.appendChild(img);
+      } else {
+        const video = document.createElement('video');
+        video.src = midia.url;
+        video.controls = true;
+        video.style.width = '100%';
+        video.style.borderRadius = '8px';
+        galeria.appendChild(video);
+      }
     });
   } else {
     galeria.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Nenhuma foto adicionada ainda.</p>';
@@ -114,7 +132,8 @@ async function handleSubmit(e) {
   }
 
   try {
-    const obras = await carregarObras();
+    // 1. Busca os dados básicos no Google Sheets
+    const obras = await carregarObras(codigo);
     const obra = buscarObra(obras, codigo);
 
     if (!obra) {
@@ -122,7 +141,8 @@ async function handleSubmit(e) {
       return;
     }
 
-    renderizarObra(obra);
+    // 2. Renderiza tudo (incluindo buscar as fotos no Supabase)
+    await renderizarObra(obra, codigo);
   } catch (erro) {
     console.error('Erro ao carregar obras:', erro);
     mostrarErro('Erro ao carregar os dados. Tente novamente.');
