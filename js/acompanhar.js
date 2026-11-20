@@ -1,5 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { montarGuindaste } from './guindaste.js?v=1';
+import { montarGuindaste, fraseComLacunas } from './guindaste.js?v=2';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -94,14 +94,21 @@ function renderizarEntrega(obra) {
   const numero = document.createElement('div');
   const info = document.createElement('div');
   const linha1 = document.createElement('strong');
-  linha1.textContent = dias > 0 ? (dias === 1 ? 'Falta 1 dia para a entrega' : `Faltam ${dias} dias para a entrega`)
-    : dias === 0 ? 'O prazo de entrega é hoje!' : 'Obra na reta final';
+  let ganchos = {};
+  if (dias > 0) {
+    // A frase começa com lacunas; o guindaste vai completando o número
+    const frase = fraseComLacunas(dias);
+    ganchos = frase.ganchos;
+    linha1.append(frase.elemento);
+  } else {
+    linha1.textContent = dias === 0 ? 'O prazo de entrega é hoje!' : 'Obra na reta final';
+  }
   const linha2 = document.createElement('span');
   linha2.textContent = `Prazo do contrato: ${dataBR(obra.data_entrega_prevista)}`;
   info.append(linha1, linha2);
   caixaPrazo.append(numero, info);
   caixaPrazo.hidden = false;
-  montarGuindaste(numero, dias);
+  montarGuindaste(numero, dias, ganchos);
 }
 
 function renderizarEtapas(etapas) {
