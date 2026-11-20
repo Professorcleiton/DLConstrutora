@@ -58,29 +58,26 @@ body {
   left: 0;
   height: 3px;
   width: 0%;
-  background: linear-gradient(90deg, var(--verde-principal), var(--verde-marca));
+  background: var(--grafite);
   z-index: 9999;
   transition: width 0.1s ease-out;
 }
 
 /* ===========================
-   HEADER (VIDRO CLARO FIXO)
+   HEADER (FAIXA VERDE DA LOGO, FIXO)
    =========================== */
 .header {
-  background: var(--vidro-bg);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background: var(--verde-marca);
   position: sticky;
   top: 0;
   z-index: 1000;
   transition: all 0.4s ease;
-  border-bottom: 1px solid var(--borda-sutil);
+  border-bottom: 1px solid rgba(22, 31, 42, 0.12);
 }
 
 .header.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  border-bottom: 2px solid var(--verde-marca);
+  background: var(--verde-marca);
+  box-shadow: 0 4px 24px rgba(22, 31, 42, 0.18);
 }
 
 .header .container {
@@ -101,7 +98,7 @@ body {
 .nav { display: flex; align-items: center; }
 
 .nav a {
-  color: var(--texto-titulo);
+  color: var(--grafite);
   text-decoration: none;
   margin-left: 32px;
   font-size: 0.9rem;
@@ -117,22 +114,22 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--verde-principal);
+  background: var(--grafite);
   transition: width 0.4s ease;
 }
 
-.nav a:hover { color: var(--verde-principal); }
+.nav a:hover { color: var(--grafite); }
 .nav a:hover::after { width: 100%; }
 
 /* BOTÃO ÁREA DO CLIENTE (APP) */
 .nav a.nav-app {
   display: inline-flex; align-items: center; gap: 6px;
-  background: var(--verde-marca); color: var(--grafite);
+  background: var(--grafite); color: var(--verde-marca);
   padding: 8px 16px; border-radius: 999px; font-weight: 600;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 .nav a.nav-app::after { display: none; }
-.nav a.nav-app:hover { background: var(--verde-marca-hover); color: var(--grafite); transform: translateY(-1px); }
+.nav a.nav-app:hover { background: var(--grafite-2); color: var(--verde-marca); transform: translateY(-1px); }
 .app-atalho { display: none; }
 
 .convite-app {
@@ -144,12 +141,12 @@ body {
 .convite-app .btn-app { background: var(--grafite); color: #FFF; padding: 12px 22px; font-size: 0.8rem; border-radius: 6px; }
 .convite-app .btn-app:hover { background: var(--grafite-2); }
 
-.menu-toggle { display: none; background: none; border: none; color: var(--texto-titulo); font-size: 1.6rem; cursor: pointer; }
+.menu-toggle { display: none; background: none; border: none; color: var(--grafite); font-size: 1.6rem; cursor: pointer; }
 
 /* REDES SOCIAIS */
 .social-header { display: flex; align-items: center; gap: 16px; margin-left: 24px; }
-.social-header a { color: var(--texto-titulo); transition: color 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
-.social-header a:hover { color: var(--verde-principal); transform: translateY(-2px); }
+.social-header a { color: var(--grafite); transition: color 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
+.social-header a:hover { color: var(--grafite-2); transform: translateY(-2px); }
 
 .social-footer { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
 .social-footer a { color: var(--texto-corpo); transition: color 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
@@ -616,14 +613,14 @@ body {
 }
 
 @media (max-width: 768px) {
-  .nav { display: none; position: absolute; top: 90px; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); flex-direction: column; padding: 24px 0; border-bottom: 1px solid var(--borda-sutil); }
+  .nav { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--verde-marca); flex-direction: column; padding: 24px 0; border-bottom: 1px solid rgba(22, 31, 42, 0.15); box-shadow: 0 12px 24px rgba(22, 31, 42, 0.15); }
   .nav.ativo { display: flex; }
   .nav a { margin: 12px 0; text-align: center; }
   .menu-toggle { display: block; }
   .nav a.nav-app { align-self: center; margin-top: 16px; }
   .app-atalho {
     display: inline-flex; align-items: center; gap: 6px; margin-left: auto; margin-right: 12px;
-    background: var(--verde-marca); color: var(--grafite); text-decoration: none;
+    background: var(--grafite); color: var(--verde-marca); text-decoration: none;
     padding: 8px 14px; border-radius: 999px; font-weight: 600; font-size: 0.85rem;
   }
   .social-header { display: none; }
