@@ -1,5 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { montarGuindaste } from '../js/guindaste.js?v=1';
+import { montarGuindaste, fraseComLacunas } from '../js/guindaste.js?v=2';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -316,10 +316,15 @@ function montarPrazo(obra) {
   card.classList.remove('hidden');
   const numero = Math.max(0, p.dias);
   const texto = [];
+  let ganchos = {};
   if (p.dias > 0) {
+    // A frase começa com lacunas; o guindaste vai completando o número
     const meses = Math.floor(p.dias / 30.44);
-    texto.push(el('p', { class: 'grande', textContent: `${p.dias === 1 ? 'Falta 1 dia' : `Faltam ${p.dias} dias`} para a entrega` }));
-    if (meses >= 1) texto.push(el('p', { class: 'dica', textContent: `Cerca de ${meses} ${meses === 1 ? 'mês' : 'meses'}` }));
+    const linhaMeses = meses >= 1 ? el('p', { class: 'dica', textContent: `Cerca de ${meses} ${meses === 1 ? 'mês' : 'meses'}` }) : null;
+    const frase = fraseComLacunas(p.dias, linhaMeses ? [linhaMeses] : []);
+    ganchos = frase.ganchos;
+    texto.push(el('p', { class: 'grande' }, frase.elemento));
+    if (linhaMeses) texto.push(linhaMeses);
   } else if (p.dias === 0) {
     texto.push(el('p', { class: 'grande', textContent: 'O prazo de entrega é hoje!' }));
   } else {
@@ -329,7 +334,7 @@ function montarPrazo(obra) {
   texto.push(el('p', { class: 'dica', textContent: `Prazo do contrato: ${dataBR(p.prazo)}` }));
   const animacao = el('div');
   card.replaceChildren(animacao, el('div', { class: 'prazo-texto' }, texto));
-  montarGuindaste(animacao, numero);
+  montarGuindaste(animacao, numero, ganchos);
 }
 
 async function carregarResumo() {

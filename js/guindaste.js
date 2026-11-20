@@ -15,6 +15,12 @@ const CSS = `
 .guindaste { position: relative; width: 210px; max-width: 100%; flex: 0 0 auto; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
 .guindaste svg { display: block; width: 100%; height: auto; overflow: visible; }
 .guindaste .gd-dica { position: absolute; right: 2px; top: 0; font-size: 11px; opacity: .55; }
+.gd-lacuna { display: inline-block; min-width: .64em; text-align: center; margin: 0 1px; border-bottom: 3px solid ${VERDE};
+  color: transparent; line-height: 1.05; font-variant-numeric: tabular-nums; animation: gd-piscar 1s ease-in-out infinite alternate; }
+.gd-lacuna.cheia { color: inherit; border-bottom-color: transparent; animation: none; }
+.gd-revelar { transition: opacity .5s ease, transform .5s ease; }
+.gd-revelar.escondido { opacity: 0; transform: translateY(4px); }
+@keyframes gd-piscar { from { border-bottom-color: ${VERDE}; } to { border-bottom-color: rgba(50,210,53,.25); } }
 @media (prefers-reduced-motion: reduce) { .guindaste { cursor: default; } .guindaste .gd-dica { display: none; } }
 `;
 
@@ -110,7 +116,7 @@ function tween(ms, fn, easing = (x) => (x < .5 ? 2 * x * x : 1 - (-2 * x + 2) **
  * @param {HTMLElement} container
  * @param {number} dias
  */
-export function montarGuindaste(container, dias) {
+export function montarGuindaste(container, dias, { aoIniciar, aoAssentar, aoTerminar } = {}) {
   injetarCss();
   const numero = String(Math.max(0, dias));
   const caixa = document.createElement('div');
@@ -150,6 +156,7 @@ export function montarGuindaste(container, dias) {
     correntes.style.opacity = '0';
     rotulo.setAttribute('opacity', '1');
     posicionar(destinos.at(-1) + 30, 20);
+    aoTerminar?.();
   }
 
   let tocando = false;
@@ -158,7 +165,9 @@ export function montarGuindaste(container, dias) {
     if (tocando) return;
     if (semAnimacao() || !caixa.isConnected) { estadoFinal(); return; }
     tocando = true;
+    aoIniciar?.();
     assentados.replaceChildren();
+    rotulo.getAnimations?.().forEach((a) => a.cancel());
     rotulo.setAttribute('opacity', '0');
     const CURTO = 22;                                   // cabo recolhido
     const LONGO = CHAO - BLOCO_A - (LANCA_Y + 14) - 14; // cabo até o bloco tocar o chão
@@ -186,6 +195,7 @@ export function montarGuindaste(container, dias) {
       assentados.appendChild(bloco);
       bloco.animate([{ transform: `translate(${destinos[i]}px, ${CHAO - BLOCO_A - 2}px) scale(1.06, .94)` },
         { transform: `translate(${destinos[i]}px, ${CHAO - BLOCO_A}px) scale(1)` }], { duration: 180 });
+      aoAssentar?.(i);
       // sobe o cabo e volta para pegar o próximo
       await tween(300, (p) => posicionar(x, LONGO - (LONGO - CURTO) * p));
       if (i < total - 1) {
@@ -198,6 +208,7 @@ export function montarGuindaste(container, dias) {
     await tween(380, (p) => { x = xFim + (destinos.at(-1) + 30 - xFim) * p; posicionar(x, CURTO); });
     rotulo.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, fill: 'forwards' });
     rotulo.setAttribute('opacity', '1');
+    aoTerminar?.();
     await esperar(100);
     tocando = false;
   }
@@ -206,4 +217,50 @@ export function montarGuindaste(container, dias) {
   caixa.addEventListener('click', tocar);
   requestAnimationFrame(() => requestAnimationFrame(tocar));
   return { tocar };
+}
+
+/**
+ * Frase "Faltam _ _ _ dias para a entrega" com lacunas que o guindaste
+ * vai preenchendo, bloco a bloco. `revelar`: elementos que só aparecem no fim.
+ * Devolve { elemento, ganchos } — passe `ganchos` para montarGuindaste.
+ * @param {number} dias
+ * @param {HTMLElement[]} revelar
+ */
+export function fraseComLacunas(dias, revelar = []) {
+  injetarCss();
+  const numero = String(Math.max(0, dias));
+  const um = numero === '1';
+  const elemento = document.createElement('span');
+  const lacunas = [...numero].map((d) => {
+    const l = document.createElement('span');
+    l.className = 'gd-lacuna';
+    l.dataset.digito = d;
+    l.textContent = '0';
+    return l;
+  });
+  elemento.append(um ? 'Falta ' : 'Faltam ', ...lacunas, um ? ' dia para a entrega' : ' dias para a entrega');
+  elemento.setAttribute('aria-label', `${um ? 'Falta' : 'Faltam'} ${numero} ${um ? 'dia' : 'dias'} para a entrega`);
+  revelar.forEach((r) => r.classList.add('gd-revelar', 'escondido'));
+
+  const esvaziar = (l) => { l.classList.remove('cheia'); l.textContent = '0'; };
+  const encher = (l, animar) => {
+    if (l.classList.contains('cheia')) return;
+    l.textContent = l.dataset.digito;
+    l.classList.add('cheia');
+    if (animar && l.animate) {
+      l.animate([
+        { transform: 'translateY(-10px) scale(1.5)', color: VERDE },
+        { transform: 'translateY(0) scale(1)', color: GRAFITE },
+      ], { duration: 420, easing: 'cubic-bezier(.3,1.6,.5,1)' });
+    }
+  };
+
+  return {
+    elemento,
+    ganchos: {
+      aoIniciar: () => { lacunas.forEach(esvaziar); revelar.forEach((r) => r.classList.add('escondido')); },
+      aoAssentar: (i) => lacunas[i] && encher(lacunas[i], true),
+      aoTerminar: () => { lacunas.forEach((l) => encher(l, false)); revelar.forEach((r) => r.classList.remove('escondido')); },
+    },
+  };
 }
