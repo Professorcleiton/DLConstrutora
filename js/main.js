@@ -140,11 +140,29 @@ function configurarVideosHero() {
   if (videos.length < 2) return;
 
   let indiceAtual = 0;
+  const hero = document.querySelector('.hero');
+  const header = document.querySelector('.header');
+
+  // Vinheta da logo: quando ela entra no verde, tira a película escura e o
+  // texto do topo (para o verde aparecer no tom da logo) e mostra uma linha
+  // grafite separando o cabeçalho verde do vídeo verde.
+  function modoLogo(ligado) {
+    hero.classList.toggle('modo-logo', ligado);
+    if (header) header.classList.toggle('borda-logo', ligado);
+  }
+  videos.forEach(video => {
+    if (!video.hasAttribute('data-vinheta-logo')) return;
+    const inicioVerde = parseFloat(video.dataset.vinhetaLogo) || 0;
+    video.addEventListener('timeupdate', () => {
+      if (video.classList.contains('active')) modoLogo(video.currentTime >= inicioVerde);
+    });
+  });
 
   function tocarProximo() {
     const atual = videos[indiceAtual];
     const proximo = videos[(indiceAtual + 1) % videos.length];
 
+    modoLogo(false);
     atual.classList.remove('active');
     atual.pause();
 
