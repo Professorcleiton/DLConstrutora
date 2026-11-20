@@ -91,6 +91,13 @@ alter table public.midias enable row level security;
 drop policy if exists "equipe gerencia obras"  on public.obras;
 drop policy if exists "equipe gerencia etapas" on public.etapas;
 
+-- Projetos novos do Supabase não liberam as tabelas automaticamente:
+-- dá à equipe logada a permissão básica (o RLS continua filtrando).
+grant select, insert, update, delete on public.obras  to authenticated;
+grant select, insert, update, delete on public.etapas to authenticated;
+grant select, insert on public.midias to authenticated;
+grant usage, select on all sequences in schema public to authenticated;
+
 create policy "equipe gerencia obras" on public.obras
   for all to authenticated using (true) with check (true);
 
