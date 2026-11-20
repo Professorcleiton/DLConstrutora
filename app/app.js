@@ -1,5 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { montarBetoneira } from '../js/betoneira.js?v=1';
+import { montarGuindaste } from '../js/guindaste.js?v=1';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -329,7 +329,7 @@ function montarPrazo(obra) {
   texto.push(el('p', { class: 'dica', textContent: `Prazo do contrato: ${dataBR(p.prazo)}` }));
   const animacao = el('div');
   card.replaceChildren(animacao, el('div', { class: 'prazo-texto' }, texto));
-  montarBetoneira(animacao, numero);
+  montarGuindaste(animacao, numero);
 }
 
 async function carregarResumo() {

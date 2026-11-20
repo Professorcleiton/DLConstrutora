@@ -572,11 +572,12 @@ body {
 .etapa.pendente { color: #9CA3AF; }
 
 /* Prazo e entrega (Acompanhar Obra) */
-.prazo-obra { display: flex; align-items: center; gap: 18px; margin: 10px 0 30px; padding: 18px; border: 1px solid var(--borda-sutil); border-radius: 10px; background: var(--fundo-site); }
+.prazo-obra { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin: 10px 0 30px; padding: 18px; border: 1px solid var(--borda-sutil); border-radius: 10px; background: var(--fundo-site); }
 .prazo-obra[hidden], .banner-entrega[hidden] { display: none; }
 .prazo-numero { background: var(--grafite); color: var(--verde-marca); border-radius: 10px; min-width: 96px; padding: 12px 10px; text-align: center; line-height: 1.1; }
 .prazo-numero strong { display: block; font-size: 2.2rem; }
 .prazo-numero span { font-size: 0.75rem; color: #FFF; text-transform: uppercase; letter-spacing: 1px; }
+.prazo-obra > div:last-child { flex: 1 1 170px; }
 .prazo-obra > div:last-child strong { display: block; color: var(--texto-titulo); font-size: 1.1rem; }
 .prazo-obra > div:last-child span { color: var(--texto-corpo); font-size: 0.95rem; }
 
