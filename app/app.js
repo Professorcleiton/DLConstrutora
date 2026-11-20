@@ -1,4 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { montarBetoneira } from '../js/betoneira.js?v=1';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -326,10 +327,9 @@ function montarPrazo(obra) {
     if (ehEquipe()) texto.push(el('p', { class: 'alerta', textContent: `⚠️ ${-p.dias} ${p.dias === -1 ? 'dia' : 'dias'} após o prazo do contrato` }));
   }
   texto.push(el('p', { class: 'dica', textContent: `Prazo do contrato: ${dataBR(p.prazo)}` }));
-  card.replaceChildren(
-    el('div', { class: 'prazo-numero' }, el('strong', { textContent: String(numero) }), el('span', { textContent: numero === 1 ? 'dia' : 'dias' })),
-    el('div', { class: 'prazo-texto' }, texto),
-  );
+  const animacao = el('div');
+  card.replaceChildren(animacao, el('div', { class: 'prazo-texto' }, texto));
+  montarBetoneira(animacao, numero);
 }
 
 async function carregarResumo() {

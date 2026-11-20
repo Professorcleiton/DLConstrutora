@@ -1,4 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { montarBetoneira } from './betoneira.js?v=1';
 
 // ===========================
 // CONFIGURAÇÃO DO SUPABASE
@@ -91,8 +92,6 @@ function renderizarEntrega(obra) {
   const dias = diasEntre(hoje(), prazo);
   caixaPrazo.innerHTML = '';
   const numero = document.createElement('div');
-  numero.className = 'prazo-numero';
-  numero.innerHTML = `<strong>${Math.max(0, dias)}</strong><span>${Math.max(0, dias) === 1 ? 'dia' : 'dias'}</span>`;
   const info = document.createElement('div');
   const linha1 = document.createElement('strong');
   linha1.textContent = dias > 0 ? (dias === 1 ? 'Falta 1 dia para a entrega' : `Faltam ${dias} dias para a entrega`)
@@ -102,6 +101,7 @@ function renderizarEntrega(obra) {
   info.append(linha1, linha2);
   caixaPrazo.append(numero, info);
   caixaPrazo.hidden = false;
+  montarBetoneira(numero, dias);
 }
 
 function renderizarEtapas(etapas) {
