@@ -42,10 +42,66 @@ function renderizarObra(obra) {
   setTimeout(() => { barra.style.width = percentual + '%'; }, 100);
   document.getElementById('percentualObra').textContent = percentual + '% concluído';
 
+  renderizarEntrega(obra);
   renderizarEtapas(obra.etapas || []);
   renderizarGaleria(obra.midias || []);
 
   resultado.style.display = 'block';
+}
+
+// ===========================
+// PRAZO E ENTREGA
+// ===========================
+function lerData(iso) {
+  if (!iso) return null;
+  const [a, m, d] = String(iso).slice(0, 10).split('-').map(Number);
+  return new Date(a, m - 1, d);
+}
+const dataBR = (iso) => lerData(iso).toLocaleDateString('pt-BR');
+const diasEntre = (a, b) => Math.round((b - a) / 86400000);
+function hoje() { const h = new Date(); return new Date(h.getFullYear(), h.getMonth(), h.getDate()); }
+
+function renderizarEntrega(obra) {
+  const banner = document.getElementById('bannerEntrega');
+  const caixaPrazo = document.getElementById('prazoObra');
+  const prazo = lerData(obra.data_entrega_prevista);
+  const entregue = lerData(obra.entregue_em);
+  banner.hidden = true;
+  caixaPrazo.hidden = true;
+
+  if (entregue) {
+    const diasAntes = prazo ? diasEntre(entregue, prazo) : null;
+    const antesDoPrazo = diasAntes != null && diasAntes > 0;
+    banner.className = 'banner-entrega' + (diasAntes != null && diasAntes < 0 ? ' banner-neutro' : '');
+    banner.innerHTML = '';
+    const emoji = document.createElement('span');
+    emoji.className = 'banner-emoji';
+    emoji.textContent = antesDoPrazo || diasAntes === 0 ? '🎉' : '🏡';
+    const titulo = document.createElement('strong');
+    titulo.textContent = antesDoPrazo ? 'Mais uma obra entregue antes do prazo!' : 'Obra entregue!';
+    const texto = document.createElement('span');
+    texto.textContent = `Entregue em ${dataBR(obra.entregue_em)}` +
+      (antesDoPrazo ? ` — ${diasAntes} ${diasAntes === 1 ? 'dia' : 'dias'} antes do prazo do contrato.` : diasAntes === 0 ? ', exatamente no prazo.' : '.');
+    banner.append(emoji, titulo, texto);
+    banner.hidden = false;
+    return;
+  }
+
+  if (!prazo) return;
+  const dias = diasEntre(hoje(), prazo);
+  caixaPrazo.innerHTML = '';
+  const numero = document.createElement('div');
+  numero.className = 'prazo-numero';
+  numero.innerHTML = `<strong>${Math.max(0, dias)}</strong><span>${Math.max(0, dias) === 1 ? 'dia' : 'dias'}</span>`;
+  const info = document.createElement('div');
+  const linha1 = document.createElement('strong');
+  linha1.textContent = dias > 0 ? (dias === 1 ? 'Falta 1 dia para a entrega' : `Faltam ${dias} dias para a entrega`)
+    : dias === 0 ? 'O prazo de entrega é hoje!' : 'Obra na reta final';
+  const linha2 = document.createElement('span');
+  linha2.textContent = `Prazo do contrato: ${dataBR(obra.data_entrega_prevista)}`;
+  info.append(linha1, linha2);
+  caixaPrazo.append(numero, info);
+  caixaPrazo.hidden = false;
 }
 
 function renderizarEtapas(etapas) {

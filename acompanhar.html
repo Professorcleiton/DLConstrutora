@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" href="img/favicon.png">
   <meta name="theme-color" content="#161F2A">
 
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 
@@ -80,6 +80,7 @@
       <p id="msgErro" class="msg-erro"></p>
 
       <div id="resultadoObra" class="resultado-obra" style="display: none;">
+        <div id="bannerEntrega" class="banner-entrega" hidden></div>
         <h2 id="nomeObra"></h2>
         <p id="enderecoObra"></p>
 
@@ -87,6 +88,8 @@
           <div id="progressoPreenchido" class="progresso-preenchido"></div>
         </div>
         <p id="percentualObra" class="percentual"></p>
+
+        <div id="prazoObra" class="prazo-obra" hidden></div>
 
         <h3>Etapas</h3>
         <ul id="listaEtapas" class="lista-etapas"></ul>
@@ -137,7 +140,7 @@
   </a>
 
   <script src="js/main.js"></script>
-  <script type="module" src="js/acompanhar.js?v=3"></script>
+  <script type="module" src="js/acompanhar.js?v=4"></script>
 
   <!-- Widget de Acessibilidade -->
   <script src="https://cdn.jsdelivr.net/npm/ufc-itapaje-accessibility/dist/index.global.js"></script>

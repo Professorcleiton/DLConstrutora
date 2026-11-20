@@ -574,6 +574,26 @@ body {
 
 .etapa.pendente { color: #9CA3AF; }
 
+/* Prazo e entrega (Acompanhar Obra) */
+.prazo-obra { display: flex; align-items: center; gap: 18px; margin: 10px 0 30px; padding: 18px; border: 1px solid var(--borda-sutil); border-radius: 10px; background: var(--fundo-site); }
+.prazo-obra[hidden], .banner-entrega[hidden] { display: none; }
+.prazo-numero { background: var(--grafite); color: var(--verde-marca); border-radius: 10px; min-width: 96px; padding: 12px 10px; text-align: center; line-height: 1.1; }
+.prazo-numero strong { display: block; font-size: 2.2rem; }
+.prazo-numero span { font-size: 0.75rem; color: #FFF; text-transform: uppercase; letter-spacing: 1px; }
+.prazo-obra > div:last-child strong { display: block; color: var(--texto-titulo); font-size: 1.1rem; }
+.prazo-obra > div:last-child span { color: var(--texto-corpo); font-size: 0.95rem; }
+
+.banner-entrega {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  background: var(--verde-marca); color: var(--grafite); border-radius: 12px;
+  padding: 28px 24px; margin: -10px 0 30px; box-shadow: 0 12px 30px rgba(50, 210, 53, 0.35);
+  animation: fadeUp 0.6s ease-out both;
+}
+.banner-entrega .banner-emoji { font-size: 2.6rem; line-height: 1; animation: pulo-banner 1.2s ease infinite alternate; }
+.banner-entrega strong { font-size: 1.5rem; line-height: 1.25; }
+.banner-entrega.banner-neutro { background: var(--grafite); color: #FFF; box-shadow: none; }
+@keyframes pulo-banner { from { transform: translateY(0) scale(1); } to { transform: translateY(-4px) scale(1.08); } }
+
 .galeria-obra { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
 .galeria-obra img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; transition: transform 0.6s ease; }
 .galeria-obra img:hover { transform: scale(1.05); }
@@ -618,7 +638,13 @@ body {
   .servicos, .financiamento, .portfolio, .sobre, .contato, .acompanhar { padding: 80px 0; }
   .servicos h2, .portfolio h2, .sobre h2, .contato h2, .financiamento h2 { font-size: 1.8rem; margin-bottom: 40px; }
   .form-acompanhar { flex-direction: column; }
-  .resultado-obra { padding: 30px; }
+  .resultado-obra { padding: 24px 18px; }
+  .prazo-obra { gap: 12px; padding: 12px; }
+  .prazo-numero { min-width: 76px; padding: 10px 6px; }
+  .prazo-numero strong { font-size: 1.8rem; }
+  .prazo-obra > div:last-child strong { font-size: 1rem; }
+  .banner-entrega { padding: 22px 16px; }
+  .banner-entrega strong { font-size: 1.2rem; }
   .header .container { height: 75px; }
   .header.scrolled .container { height: 65px; }
   .logo-img { height: 45px; }
