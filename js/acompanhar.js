@@ -64,7 +64,6 @@ async function renderizarObra(obra, codigo) {
   document.getElementById('nomeObra').textContent = obra.nome;
   document.getElementById('enderecoObra').textContent = obra.endereco;
   
-  // Animação da barra de progresso
   setTimeout(() => {
     document.getElementById('progressoPreenchido').style.width = obra.percentual + '%';
   }, 100);
@@ -73,8 +72,12 @@ async function renderizarObra(obra, codigo) {
 
   renderizarEtapas(obra.etapas);
   
-  // Busca as fotos no Supabase
+  // Força a busca no Supabase
+  console.log("Buscando fotos no Supabase para o código:", codigo);
   const midiasSupabase = await buscarMidiasSupabase(codigo);
+  console.log("Fotos encontradas no Supabase:", midiasSupabase);
+  
+  // Renderiza apenas o que veio do Supabase
   renderizarGaleria(midiasSupabase);
 
   resultado.style.display = 'block';
