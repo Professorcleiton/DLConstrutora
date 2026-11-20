@@ -2,134 +2,336 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DL Construtora – App da Obra</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2563eb">
-  <link rel="icon" type="image/jpeg" href="../img/DLOGO.jpg">
+  <meta name="theme-color" content="#161F2A">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="DL Obra">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      /* Paleta da logo nova */
+      --verde: #32D235;          /* verde da logo (fundo de botões, com texto grafite) */
+      --verde-hover: #2BBD2E;
+      --verde-texto: #157F1A;    /* verde escuro para texto/links sobre branco */
+      --verde-suave: #E9F9E9;
+      --grafite: #161F2A;        /* letras da logo */
+      --grafite-2: #24303E;
+      --fundo: #F5F7F6; --card: #FFFFFF; --titulo: #161F2A; --texto: #4B5563;
+      --borda: #E5E7EB; --erro: #B91C1C; --ok: #157F1A;
+    }
     * { box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; padding: 16px; max-width: 560px; margin: auto; color: #1f2937; background: #f9fafb; }
-    h2 { margin: 8px 0 16px; }
+    html, body { margin: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: var(--titulo); background: var(--fundo); min-height: 100vh; }
     .hidden { display: none !important; }
-    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-    label { display: block; font-weight: 600; font-size: 14px; margin-top: 12px; }
-    input, select, textarea { width: 100%; padding: 10px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; background: #fff; }
-    button { padding: 12px; cursor: pointer; border: none; border-radius: 8px; font-size: 15px; }
-    button:disabled { opacity: 0.5; cursor: wait; }
-    .btn-primario { background: #2563eb; color: #fff; width: 100%; margin-top: 12px; }
-    .btn-sair { background: #e5e7eb; }
-    .topo { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .topo small { color: #6b7280; overflow: hidden; text-overflow: ellipsis; }
-    .abas { display: flex; gap: 8px; margin: 12px 0 16px; }
-    .abas button { flex: 1; background: #e5e7eb; }
-    .abas button.ativa { background: #1f2937; color: #fff; }
-    .destino-botoes { display: flex; gap: 12px; margin-top: 12px; }
-    .destino-botoes button { flex: 1; padding: 18px 10px; font-size: 15px; color: #fff; }
-    .btn-obra { background: #2563eb; }
-    .btn-redes { background: #f59e0b; }
-    #preview img, #preview video { max-width: 100%; max-height: 260px; border-radius: 8px; margin-top: 8px; }
+    button { font-family: inherit; cursor: pointer; border: none; border-radius: 10px; font-size: 15px; padding: 12px 14px; }
+    button:disabled { opacity: .55; cursor: wait; }
+    input, select, textarea { width: 100%; font-family: inherit; font-size: 16px; padding: 12px; margin: 6px 0 2px; border: 1px solid #D1D5DB; border-radius: 10px; background: #fff; color: var(--titulo); }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--verde); outline-offset: 0; border-color: transparent; }
+    label { display: block; font-weight: 600; font-size: 14px; margin-top: 14px; }
+    .status { margin: 12px 0 0; font-weight: 600; font-size: 14px; min-height: 1em; }
+    .ok { color: var(--ok); } .erro { color: var(--erro); } .info { color: var(--texto); }
+    .btn-primario { background: var(--verde); color: var(--grafite); width: 100%; font-weight: 600; padding: 14px; margin-top: 18px; }
+    .btn-primario:hover { background: var(--verde-hover); }
+    .btn-link { background: none; color: var(--verde-texto); padding: 6px 0; font-weight: 600; font-size: 14px; }
+
+    /* ---------- TELAS DE ENTRADA ---------- */
+    .entrada { min-height: 100vh; display: flex; flex-direction: column; }
+    .entrada-topo {
+      background: var(--grafite);
+      background-image: radial-gradient(circle at 50% 0%, rgba(50,210,53,.22), transparent 60%);
+      padding: 48px 24px 88px; text-align: center; color: #fff;
+    }
+    .entrada-topo img { width: 132px; height: 132px; object-fit: cover; border-radius: 28px; box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+    .entrada-topo h1 { font-size: 22px; margin: 18px 0 4px; font-weight: 700; }
+    .entrada-topo p { margin: 0; opacity: .85; font-size: 15px; }
+    .entrada-card {
+      background: var(--card); width: calc(100% - 32px); max-width: 420px; margin: -56px auto 0;
+      border-radius: 18px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,.08); border-top: 4px solid var(--verde);
+    }
+    .entrada-card h2 { margin: 0 0 4px; font-size: 20px; }
+    .entrada-card .sub { margin: 0 0 6px; color: var(--texto); font-size: 14px; }
+    .campo-senha { position: relative; }
+    .campo-senha input { padding-right: 52px; }
+    .campo-senha button { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); margin-top: 2px; background: none; padding: 8px 10px; font-size: 18px; }
+    .entrada-rodape { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 4px; }
+    .voltar-site { display: block; text-align: center; margin: 24px auto 32px; color: var(--texto); font-size: 14px; text-decoration: none; }
+    .voltar-site:hover { color: var(--verde-texto); }
+    .carregando { min-height: 100vh; display: grid; place-items: center; color: var(--texto); }
+
+    /* ---------- APP ---------- */
+    .app-topo { background: var(--grafite); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 5; }
+    .app-topo-linha { max-width: 640px; margin: auto; display: flex; align-items: center; gap: 12px; }
+    .app-topo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+    .app-topo .quem { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
+    .app-topo .quem strong { display: block; font-size: 15px; }
+    .app-topo .quem > span { opacity: .85; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .selo { display: inline-block; background: var(--verde); color: var(--grafite); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: .03em; margin-left: 4px; vertical-align: middle; }
+    .btn-sair { background: rgba(255,255,255,.15); color: #fff; padding: 8px 12px; font-size: 14px; }
+    .abas { max-width: 640px; margin: 12px auto 0; padding: 0 16px; display: flex; gap: 6px; }
+    .abas button { flex: 1 1 0; min-width: 0; background: #E9ECEF; color: var(--titulo); font-size: 13px; font-weight: 600; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .abas button .ic { font-size: 18px; line-height: 1; }
+    .abas button.ativa { background: var(--grafite); color: var(--verde); }
+    main { max-width: 640px; margin: 12px auto 40px; padding: 0 16px; }
+    .card { background: var(--card); border: 1px solid var(--borda); border-radius: 14px; padding: 18px; }
+    .card + .card { margin-top: 14px; }
+    .card h3 { margin: 0 0 4px; font-size: 17px; }
+    .dica { color: var(--texto); font-size: 13px; margin: 6px 0 0; line-height: 1.45; }
+    .obra-fixa { background: var(--verde-suave); border: 1px solid #C5EEC6; border-radius: 10px; padding: 10px 12px; margin-top: 6px; font-weight: 600; color: var(--verde-texto); }
+    #preview img, #preview video { max-width: 100%; max-height: 260px; border-radius: 10px; margin-top: 8px; display: block; }
+    .destino-botoes { display: flex; gap: 10px; margin-top: 10px; }
+    .destino-botoes button { flex: 1; padding: 16px 8px; font-weight: 600; }
+    .btn-obra { background: var(--verde); color: var(--grafite); }
+    .btn-redes { background: var(--grafite); color: #fff; }
+
+    .filtros { display: flex; flex-wrap: wrap; gap: 0 8px; }
+    .filtros > * { flex: 1 1 200px; }
+    .grade-midias { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; }
+    .midia { border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+    .midia img, .midia video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #F3F4F6; }
+    .midia-info { padding: 8px 10px; font-size: 12px; color: var(--texto); flex: 1; }
+    .midia-info p { margin: 0 0 4px; color: var(--titulo); font-size: 13px; overflow-wrap: anywhere; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; }
+    .tag-obra { background: var(--verde-suave); color: var(--verde-texto); }
+    .tag-redes { background: #E7EAEE; color: var(--grafite); }
+    .midia-acoes { display: flex; flex-wrap: wrap; border-top: 1px solid var(--borda); }
+    .midia-acoes .mover { order: 3; flex-basis: 100%; border-left: none !important; border-top: 1px solid var(--borda); }
+    .midia-acoes > * { flex: 1; white-space: nowrap; text-align: center; font-size: 12px; padding: 9px 2px; background: none; border-radius: 0; color: var(--verde-texto); font-weight: 600; text-decoration: none; }
+    .midia-acoes > * + * { border-left: 1px solid var(--borda); }
+    .midia-acoes .apagar { color: var(--erro); }
+    .vazio { color: var(--texto); font-size: 14px; text-align: center; padding: 24px 0 8px; }
+
     .percentual-linha { display: flex; gap: 10px; align-items: center; }
-    .percentual-linha input[type=range] { flex: 1; }
-    .percentual-linha input[type=number] { width: 80px; }
-    .etapa-linha { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #f3f4f6; }
+    .percentual-linha input[type=range] { flex: 1; accent-color: var(--verde-texto); }
+    .percentual-linha input[type=number] { width: 84px; }
+    .etapa-linha { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #F3F4F6; }
     .etapa-linha input { flex: 1 1 100%; margin: 0; }
     .etapa-linha select { flex: 1; margin: 0; }
-    .etapa-linha button { padding: 8px 10px; background: #f3f4f6; }
-    .btn-secundario { background: #f3f4f6; width: 100%; margin-top: 6px; }
-    .status { margin-top: 12px; font-weight: 600; }
-    .ok { color: #15803d; } .erro { color: #b91c1c; } .info { color: #374151; }
-    .link-site { font-size: 14px; display: inline-block; margin-top: 8px; }
+    .etapa-linha button { padding: 10px 12px; background: #F3F4F6; }
+    .btn-secundario { background: #F3F4F6; width: 100%; margin-top: 6px; }
+    .link-site { font-size: 14px; display: inline-block; margin-top: 10px; color: var(--verde-texto); }
+
+    .lista-acessos { list-style: none; padding: 0; margin: 10px 0 0; }
+    .lista-acessos li { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 14px; }
+    .lista-acessos .email { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .lista-acessos small { color: var(--texto); display: block; }
+    .lista-acessos button { background: #F3F4F6; padding: 8px 10px; font-size: 13px; }
   </style>
 </head>
 <body>
 
+<div id="tela-carregando" class="carregando">Carregando…</div>
+
 <!-- ============ LOGIN ============ -->
-<div id="tela-login" class="card">
-  <h2>Entrar</h2>
-  <form id="formLogin">
-    <input type="email" id="email" placeholder="E-mail" autocomplete="username" required>
-    <input type="password" id="senha" placeholder="Senha" autocomplete="current-password" required>
-    <button type="submit" class="btn-primario">Entrar</button>
-  </form>
-  <p id="erro-login" class="status erro"></p>
+<div id="tela-login" class="entrada hidden">
+  <div class="entrada-topo">
+    <img src="icon-512.png" alt="DL Construtora">
+    <h1>App da Obra</h1>
+    <p>Fotos, vídeos e andamento da sua obra</p>
+  </div>
+  <div class="entrada-card">
+    <h2>Entrar</h2>
+    <p class="sub">Use o e-mail e a senha que a DL Construtora cadastrou para você.</p>
+    <form id="formLogin">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" autocomplete="username" inputmode="email" placeholder="seuemail@exemplo.com" required>
+      <label for="senha">Senha</label>
+      <div class="campo-senha">
+        <input type="password" id="senha" autocomplete="current-password" placeholder="Sua senha" required>
+        <button type="button" class="ver-senha" data-alvo="senha" aria-label="Mostrar senha">👁️</button>
+      </div>
+      <button type="submit" class="btn-primario">Entrar</button>
+    </form>
+    <div class="entrada-rodape">
+      <button type="button" class="btn-link" id="btnEsqueci">Esqueci minha senha</button>
+    </div>
+    <p id="statusLogin" class="status"></p>
+  </div>
+  <a class="voltar-site" href="../index.html">← Voltar para o site</a>
+</div>
+
+<!-- ============ ESQUECI A SENHA ============ -->
+<div id="tela-esqueci" class="entrada hidden">
+  <div class="entrada-topo">
+    <img src="icon-512.png" alt="DL Construtora">
+    <h1>Recuperar senha</h1>
+    <p>Vamos enviar um link para o seu e-mail</p>
+  </div>
+  <div class="entrada-card">
+    <form id="formEsqueci">
+      <label for="emailEsqueci">E-mail</label>
+      <input type="email" id="emailEsqueci" autocomplete="username" inputmode="email" required>
+      <button type="submit" class="btn-primario">Enviar link</button>
+    </form>
+    <button type="button" class="btn-link" data-ir="tela-login">← Voltar para o login</button>
+    <p id="statusEsqueci" class="status"></p>
+  </div>
+</div>
+
+<!-- ============ NOVA SENHA ============ -->
+<div id="tela-nova-senha" class="entrada hidden">
+  <div class="entrada-topo">
+    <img src="icon-512.png" alt="DL Construtora">
+    <h1>Nova senha</h1>
+    <p>Escolha uma senha com pelo menos 6 caracteres</p>
+  </div>
+  <div class="entrada-card">
+    <form id="formNovaSenha">
+      <label for="novaSenha">Nova senha</label>
+      <div class="campo-senha">
+        <input type="password" id="novaSenha" autocomplete="new-password" minlength="6" required>
+        <button type="button" class="ver-senha" data-alvo="novaSenha" aria-label="Mostrar senha">👁️</button>
+      </div>
+      <label for="novaSenha2">Repita a nova senha</label>
+      <input type="password" id="novaSenha2" autocomplete="new-password" minlength="6" required>
+      <button type="submit" class="btn-primario">Salvar nova senha</button>
+    </form>
+    <p id="statusNovaSenha" class="status"></p>
+  </div>
+</div>
+
+<!-- ============ SEM ACESSO ============ -->
+<div id="tela-sem-acesso" class="entrada hidden">
+  <div class="entrada-topo">
+    <img src="icon-512.png" alt="DL Construtora">
+    <h1>Acesso pendente</h1>
+  </div>
+  <div class="entrada-card">
+    <p>Seu login está correto, mas a DL Construtora ainda não liberou o seu acesso a nenhuma obra.</p>
+    <p class="sub">Peça para a equipe liberar e entre de novo.</p>
+    <button type="button" class="btn-primario btn-sair-geral">Sair</button>
+  </div>
 </div>
 
 <!-- ============ APP ============ -->
 <div id="tela-app" class="hidden">
-  <div class="topo">
-    <small id="usuarioLogado"></small>
-    <button class="btn-sair" id="btnSair">Sair</button>
-  </div>
-
-  <div class="abas">
-    <button data-aba="aba-envio" class="ativa">📷 Enviar mídia</button>
-    <button data-aba="aba-obras">🏗️ Gerenciar obras</button>
-  </div>
-
-  <!-- ---------- ENVIAR MÍDIA ---------- -->
-  <div id="aba-envio" class="card">
-    <label for="obraEnvio">Obra</label>
-    <select id="obraEnvio"></select>
-
-    <label for="arquivo">Foto ou vídeo</label>
-    <input type="file" id="arquivo" accept="image/*,video/*">
-    <div id="preview"></div>
-
-    <label for="legenda">Legenda (opcional)</label>
-    <textarea id="legenda" rows="2"></textarea>
-
-    <label for="categoria">Categoria (opcional)</label>
-    <select id="categoria">
-      <option value="">--</option>
-      <option value="estrutura">Estrutura</option>
-      <option value="acabamento">Acabamento</option>
-      <option value="instalacao">Instalação</option>
-      <option value="antes-depois">Antes/Depois</option>
-    </select>
-
-    <p><strong>O que fazer com esta mídia?</strong></p>
-    <div class="destino-botoes">
-      <button class="btn-obra" data-destino="obra">🏗️ Publicar em Acompanhar Obra</button>
-      <button class="btn-redes" data-destino="redes">📱 Enviar para Redes Sociais</button>
+  <header class="app-topo">
+    <div class="app-topo-linha">
+      <img src="icon-192.png" alt="">
+      <div class="quem">
+        <strong>App da Obra <span id="seloPapel" class="selo"></span></strong>
+        <span id="usuarioLogado"></span>
+      </div>
+      <button class="btn-sair btn-sair-geral">Sair</button>
     </div>
-    <p id="statusEnvio" class="status"></p>
-  </div>
+  </header>
 
-  <!-- ---------- GERENCIAR OBRAS ---------- -->
-  <div id="aba-obras" class="card hidden">
-    <label for="obraEditar">Escolha a obra</label>
-    <select id="obraEditar"></select>
+  <nav class="abas">
+    <button data-aba="aba-envio" class="ativa"><span class="ic">📷</span>Enviar</button>
+    <button data-aba="aba-midias"><span class="ic">🖼️</span>Mídias</button>
+    <button data-aba="aba-obras" class="so-equipe"><span class="ic">🏗️</span>Obras</button>
+    <button data-aba="aba-acessos" class="so-equipe"><span class="ic">👥</span>Acessos</button>
+  </nav>
 
-    <form id="formObra">
-      <div id="campoCodigo">
-        <label for="obraCodigo">Código (ex: CDO-2026-003)</label>
-        <input type="text" id="obraCodigo" style="text-transform: uppercase;" required>
+  <main>
+    <!-- ---------- ENVIAR ---------- -->
+    <section id="aba-envio" class="card aba">
+      <h3>Enviar foto ou vídeo</h3>
+      <label for="obraEnvio">Obra</label>
+      <select id="obraEnvio" class="so-equipe seletor-obra"></select>
+      <div id="obraEnvioFixa" class="obra-fixa so-cliente"></div>
+
+      <label for="arquivo">Foto ou vídeo</label>
+      <input type="file" id="arquivo" accept="image/*,video/*">
+      <div id="preview"></div>
+
+      <label for="legenda">Legenda (opcional)</label>
+      <textarea id="legenda" rows="2" placeholder="Ex: Concretagem da laje"></textarea>
+
+      <label for="categoria">Categoria (opcional)</label>
+      <select id="categoria">
+        <option value="">--</option>
+        <option value="estrutura">Estrutura</option>
+        <option value="acabamento">Acabamento</option>
+        <option value="instalacao">Instalação</option>
+        <option value="antes-depois">Antes/Depois</option>
+      </select>
+
+      <div class="destino-botoes">
+        <button class="btn-obra" data-destino="obra">🏗️ Publicar em Acompanhar Obra</button>
+        <button class="btn-redes so-equipe" data-destino="redes">📱 Enviar para Redes Sociais</button>
       </div>
+      <p id="statusEnvio" class="status"></p>
+    </section>
 
-      <label for="obraNome">Nome da obra</label>
-      <input type="text" id="obraNome" required>
-
-      <label for="obraEndereco">Endereço</label>
-      <input type="text" id="obraEndereco">
-
-      <label for="obraPercentualNum">Percentual concluído</label>
-      <div class="percentual-linha">
-        <input type="range" id="obraPercentualRange" min="0" max="100" step="1">
-        <input type="number" id="obraPercentualNum" min="0" max="100" step="1" required>
+    <!-- ---------- MÍDIAS ---------- -->
+    <section id="aba-midias" class="card aba hidden">
+      <h3>Mídias enviadas</h3>
+      <div class="filtros">
+        <select id="obraMidias" class="so-equipe seletor-obra" aria-label="Obra"></select>
+        <select id="filtroDestino" class="so-equipe" aria-label="Destino">
+          <option value="">Todas</option>
+          <option value="obra">🏗️ Acompanhar Obra</option>
+          <option value="redes">📱 Redes Sociais</option>
+        </select>
       </div>
+      <p id="statusMidias" class="status"></p>
+      <div id="gradeMidias" class="grade-midias"></div>
+    </section>
 
-      <label>Etapas</label>
-      <div id="listaEtapas"></div>
-      <button type="button" class="btn-secundario" id="btnAddEtapa">+ Adicionar etapa</button>
+    <!-- ---------- OBRAS (equipe) ---------- -->
+    <section id="aba-obras" class="card aba hidden">
+      <h3>Gerenciar obras</h3>
+      <label for="obraEditar">Escolha a obra</label>
+      <select id="obraEditar"></select>
 
-      <button type="submit" class="btn-primario">💾 Salvar obra</button>
-    </form>
-    <a id="linkSite" class="link-site hidden" target="_blank" rel="noopener">Ver como o cliente vê ↗</a>
-    <p id="statusObra" class="status"></p>
-  </div>
+      <form id="formObra">
+        <div id="campoCodigo">
+          <label for="obraCodigo">Código (ex: CDO-2026-003)</label>
+          <input type="text" id="obraCodigo" style="text-transform: uppercase;" required>
+        </div>
+        <label for="obraNome">Nome da obra</label>
+        <input type="text" id="obraNome" required>
+        <label for="obraEndereco">Endereço</label>
+        <input type="text" id="obraEndereco">
+        <label for="obraPercentualNum">Percentual concluído</label>
+        <div class="percentual-linha">
+          <input type="range" id="obraPercentualRange" min="0" max="100" step="1" aria-label="Percentual">
+          <input type="number" id="obraPercentualNum" min="0" max="100" step="1" required>
+        </div>
+        <label>Etapas</label>
+        <div id="listaEtapas"></div>
+        <button type="button" class="btn-secundario" id="btnAddEtapa">+ Adicionar etapa</button>
+        <button type="submit" class="btn-primario">💾 Salvar obra</button>
+      </form>
+      <a id="linkSite" class="link-site hidden" target="_blank" rel="noopener">Ver como o cliente vê ↗</a>
+      <p id="statusObra" class="status"></p>
+    </section>
+
+    <!-- ---------- ACESSOS (equipe) ---------- -->
+    <section id="aba-acessos" class="aba hidden">
+      <div class="card">
+        <h3>Liberar acesso</h3>
+        <p class="dica">1º Crie o login no Supabase: <strong>Authentication → Users → Add user</strong> (e-mail + senha, marque "Auto Confirm User").<br>2º Libere aqui o que essa pessoa pode ver.</p>
+        <form id="formAcesso">
+          <label for="acessoEmail">E-mail da pessoa</label>
+          <input type="email" id="acessoEmail" inputmode="email" required>
+          <label for="acessoPapel">Tipo de acesso</label>
+          <select id="acessoPapel">
+            <option value="cliente">Cliente – vê só a obra dele</option>
+            <option value="equipe">Equipe – vê e edita tudo</option>
+          </select>
+          <div id="campoAcessoObra">
+            <label for="acessoObra">Obra do cliente</label>
+            <select id="acessoObra" class="seletor-obra"></select>
+          </div>
+          <button type="submit" class="btn-primario">Liberar acesso</button>
+        </form>
+        <p id="statusAcesso" class="status"></p>
+      </div>
+      <div class="card">
+        <h3>Quem tem acesso</h3>
+        <ul id="listaAcessos" class="lista-acessos"></ul>
+      </div>
+    </section>
+  </main>
 </div>
 
-<script type="module" src="./app.js?v=3"></script>
+<script type="module" src="./app.js?v=4"></script>
 </body>
 </html>
