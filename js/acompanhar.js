@@ -10,13 +10,11 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // ACOMPANHAR OBRA
 // ===========================
 
-let obrasCache = null;
-
 const formAcompanhar = document.getElementById('formAcompanhar');
 const msgErro = document.getElementById('msgErro');
 const resultado = document.getElementById('resultadoObra');
 
-// URL do seu Google Apps Script (MANTIDA A SUA URL ORIGINAL)
+// URL do seu Google Apps Script
 const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxRZAkglhLG3opeL920aFci-vzPtB1Un9I5AVkj4E4S6v1amuaPo2WSy9pfuXIRC98d/exec";
 
 async function carregarObras(codigo) {
@@ -75,7 +73,7 @@ async function renderizarObra(obra, codigo) {
 
   renderizarEtapas(obra.etapas);
   
-  // AQUI: Busca as fotos no Supabase em vez de usar as fotos do Google Sheets
+  // Busca as fotos no Supabase
   const midiasSupabase = await buscarMidiasSupabase(codigo);
   renderizarGaleria(midiasSupabase);
 
@@ -90,7 +88,6 @@ function renderizarEtapas(etapas) {
     const li = document.createElement('li');
     li.textContent = etapa.nome;
     
-    // Lógica para os 3 status
     if (etapa.status === 'concluida') {
       li.className = 'etapa concluida';
     } else if (etapa.status === 'andamento') {
@@ -115,7 +112,6 @@ function renderizarGaleria(midias) {
         img.src = midia.url;
         img.alt = midia.legenda || 'Foto da obra';
         img.loading = 'lazy';
-        // Adiciona um estilo básico caso o CSS do site não pegue
         img.style.width = '100%';
         img.style.borderRadius = '8px';
         img.style.marginBottom = '10px';
@@ -153,7 +149,6 @@ async function handleSubmit(e) {
   }
 
   try {
-    // 1. Busca os dados básicos no Google Sheets
     const obras = await carregarObras(codigo);
     const obra = buscarObra(obras, codigo);
 
@@ -162,7 +157,6 @@ async function handleSubmit(e) {
       return;
     }
 
-    // 2. Renderiza tudo (incluindo buscar as fotos no Supabase)
     await renderizarObra(obra, codigo);
   } catch (erro) {
     console.error('Erro ao carregar obras:', erro);
